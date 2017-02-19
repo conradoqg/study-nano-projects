@@ -60,12 +60,14 @@ class Snake {
   }
 
   draw() {
-    p.fill(255);
+    const from = p.color('#B701C4');
+    const to = p.color('#472D49');
+    p.fill(from);
+    p.rect(this.x, this.y, this.size, this.size);
     for (let i = 0; i < this.tail.length; i++) {
+      p.fill(p.lerpColor(to, from, (1 * i) / this.tail.length))
       p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
-    p.rect(this.x, this.y, this.size, this.size);
-
   }
 }
 

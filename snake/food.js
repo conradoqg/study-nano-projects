@@ -15,6 +15,7 @@ class Food {
 
     draw() {
         p.fill(255, 0, 100);
+        p.noStroke();
         p.rect(this.x, this.y, this.size, this.size);
     }
 }
