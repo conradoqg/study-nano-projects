@@ -11,8 +11,7 @@ class Snake {
   }
 
   eat(food) {
-    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);
-    debug('distanceToFood', distanceToFood);
+    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);    
     if (distanceToFood < 1) {
       this.increaseTailSize();
       return true;

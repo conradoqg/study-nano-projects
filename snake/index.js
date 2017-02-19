@@ -26,8 +26,6 @@ let sketch = (p) => {
     p.background('#474749');
 
     tick(() => {
-      debug('FPS', p.round(p.frameCount / (p.millis() / 1000)));
-
       if (snake.eat(food)) {
         do {
           food = new Food(SIZE);
@@ -38,10 +36,6 @@ let sketch = (p) => {
     }, 300)
     food.draw();
     snake.draw();
-
-    debug('timer', timer);
-    debug('snake', snake);
-    debug('food', food)
   };
 
   p.mousePressed = () => {
@@ -63,29 +57,6 @@ let sketch = (p) => {
 
 p5.disableFriendlyErrors = true;
 let myp5 = new p5(sketch, 'canvas');
-
-let variablesToDebug = {};
-let cache = [];
-function debug(varName, variable) {
-  if (varName != null) {
-    variablesToDebug[varName] = variable;
-  }
-  const codeNode = document.getElementById('debug');
-  let cache = [];
-  codeNode.innerText = JSON.stringify(variablesToDebug, (key, value) => {
-    if (typeof value === 'object' && value !== null) {
-      if (cache.indexOf(value) !== -1) {
-        return;
-      }
-      cache.push(value);
-    }
-    return value;
-  }, '\t');
-  cache = null;
-  hljs.highlightBlock(codeNode);
-}
-
-window.debug = debug;
 
 let timer = 0;
 function tick(fn, interval) {
