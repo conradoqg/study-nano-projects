@@ -7,8 +7,7 @@ class Snake {
     this.size = size;
     this.total = 0;
     this.tailsToAdd = 0;
-
-    this.directionChanged = true;
+    this.directionsToChange = [];
   }
 
   eat(food) {
@@ -22,14 +21,17 @@ class Snake {
     }
   }
 
-  changeDirection(x, y) {     
-    if (x != this.xspeed * -1 && y != this.yspeed * -1) {
-      if (this.directionChanged) {
-        this.xspeed = x;
-        this.yspeed = y;
-        this.directionChanged = false;
-      }
+  addDirectionChange(x, y) {
+    var predicate = (this.directionsToChange.length > 0 ? this.directionsToChange[this.directionsToChange.length - 1] : { x: this.xspeed, y: this.yspeed });
+    if (x != predicate.x * -1 || y != predicate.y * -1) {
+      this.directionsToChange.unshift({ x, y });
     }
+  }
+
+  changeDirection() {
+    let direction = this.directionsToChange.pop();
+    this.xspeed = direction.x;
+    this.yspeed = direction.y;
   }
 
   dieOnColision() {
@@ -60,19 +62,21 @@ class Snake {
 
   update() {    
     if (this.tailsToAdd > 0) this.increaseTailSize();
+    if (this.directionsToChange.length > 0) this.changeDirection();
     this.move();
   }
 
   move() {
     let headBefore = { x: this.head.x, y: this.head.y };
 
+    // Move snake head by the current direction
     this.head.x = this.head.x + this.xspeed;
     this.head.y = this.head.y + this.yspeed;
-    this.directionChanged = true;
 
     this.head.x = p.constrain(this.head.x, 0, p.width - this.size);
     this.head.y = p.constrain(this.head.y, 0, p.height - this.size);
 
+    // Move every tail piece to the next tail position and set the last to the previous head position
     if (this.tail.length > 0) {
       for (let i = 0; i < this.tail.length - 1; i++) {
         this.tail[i] = this.tail[i + 1];

@@ -32,8 +32,8 @@ let sketch = (p) => {
         food = new Food(SIZE);
       }      
       snake.update();
-    }, 300)    
-    snake.dieOnColision();
+      snake.dieOnColision();
+    }, 300)        
     food.draw();
     snake.draw();
 
@@ -48,13 +48,13 @@ let sketch = (p) => {
 
   p.keyPressed = () => {
     if (p.keyCode === p.UP_ARROW) {
-      snake.changeDirection(0, -SIZE);
+      snake.addDirectionChange(0, -SIZE);
     } else if (p.keyCode === p.DOWN_ARROW) {
-      snake.changeDirection(0, SIZE);
+      snake.addDirectionChange(0, SIZE);
     } else if (p.keyCode === p.RIGHT_ARROW) {
-      snake.changeDirection(SIZE, 0);
+      snake.addDirectionChange(SIZE, 0);
     } else if (p.keyCode === p.LEFT_ARROW) {
-      snake.changeDirection(-SIZE, 0);
+      snake.addDirectionChange(-SIZE, 0);
     }
   }
 };
