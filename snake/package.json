@@ -8,7 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "budo index.js -dir . -l -o"
+    "start": "budo index.js -dir . -l --babelyfy -o"
   },
   "author": "Conrado Quilles Gomes <conradoqg@gmail.com>",
   "license": "MIT"
