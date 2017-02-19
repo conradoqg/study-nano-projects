@@ -5,13 +5,13 @@ class Snake {
     this.head = { x: 0, y: 0 };
     this.tail = [];
     this.size = size;
-    this.total = 0;
+    this.total = 1;
     this.tailsToAdd = 0;
     this.directionsToChange = [];
   }
 
   eat(food) {
-    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);    
+    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);
     if (distanceToFood < 1) {
       this.increaseTailSize();
       return true;
@@ -73,7 +73,7 @@ class Snake {
     }
 
     if (collides) {
-      this.total = 0;
+      this.total = 1;
       this.tail = [];
       this.head = { x: 0, y: 0 };
       this.xspeed = this.size;
@@ -111,7 +111,7 @@ class Snake {
       for (let i = 0; i < this.tail.length - 1; i++) {
         this.tail[i] = this.tail[i + 1];
       }
-      this.tail[this.total - 1] = headBefore;
+      this.tail[this.tail.length - 1] = headBefore;
     }
   }
 

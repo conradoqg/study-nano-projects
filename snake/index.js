@@ -11,12 +11,16 @@ const Food = require('./food.js');
 let sketch = (p) => {
   window.p = p;
   const SIZE = 20;
+  const WIDTH = 600;
+  const HEIGHT = 600;
 
   let snake = null;
   let food = null;
+  let tickSpeed = 50;
+  let totalCells = p.floor(WIDTH / SIZE) * p.floor(HEIGHT / SIZE);
 
   p.setup = () => {
-    p.createCanvas(600, 600);
+    p.createCanvas(WIDTH, HEIGHT);
     p.frameRate(30);
     snake = new Snake(SIZE);
     food = new Food(SIZE);
@@ -24,6 +28,7 @@ let sketch = (p) => {
 
   p.draw = () => {
     p.background('#474749');
+    tickSpeed = 300 - p.floor(((250 * snake.total) / totalCells))
 
     tick(() => {
       if (snake.eat(food)) {
@@ -32,8 +37,8 @@ let sketch = (p) => {
         } while (snake.collides(food.x, food.y))
       }
       snake.update();
-      snake.dieOnCollision();
-    }, 300)
+      snake.dieOnCollision();            
+    }, tickSpeed)
     food.draw();
     snake.draw();
   };
