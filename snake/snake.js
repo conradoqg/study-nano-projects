@@ -1,27 +1,28 @@
 class Snake {
   constructor(size) {
-    this.x = 0;
-    this.y = 0;
     this.xspeed = size;
     this.yspeed = 0;
+    this.head = { x: 0, y: 0 };
+    this.tail = [];
     this.size = size;
     this.total = 0;
-    this.tail = [];
+    this.tailsToAdd = 0;
+
     this.directionChanged = true;
   }
 
   eat(food) {
-    let distanceToFood = p.dist(this.x, this.y, food.x, food.y);
+    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);
     debug('distanceToFood', distanceToFood);
     if (distanceToFood < 1) {
-      this.total++;
+      this.increaseTailSize();
       return true;
     } else {
       return false;
     }
   }
 
-  changeDirection(x, y) {
+  changeDirection(x, y) {     
     if (x != this.xspeed * -1 && y != this.yspeed * -1) {
       if (this.directionChanged) {
         this.xspeed = x;
@@ -33,11 +34,12 @@ class Snake {
 
   dieOnColision() {
     let distancesToDeath = [];
-    for (let i = 0; i < this.tail.length; i++) {
-      let pos = this.tail[i];
-      const distanceToDeath = p.dist(this.x, this.y, pos.x, pos.y);
+    for (let i = 0; i < this.tail.length - 1; i++) {
+      let tail = this.tail[i];
+      const distanceToDeath = p.dist(this.head.x, this.head.y, tail.x, tail.y);
       distancesToDeath.push(distanceToDeath);
       if (distanceToDeath < 1) {
+        console.log('dead');
         this.total = 0;
         this.tail = [];
       }
@@ -45,27 +47,45 @@ class Snake {
     debug('distancesToDeath', distancesToDeath);
   }
 
+  addTail() {
+    this.tailsToAdd++;
+  }
+
+  increaseTailSize() {
+    let newTail = { x: this.head.x, y: this.head.y };
+    this.total++;
+    this.tail.unshift(newTail);
+    this.tailsToAdd--;
+  }
+
+  update() {    
+    if (this.tailsToAdd > 0) this.increaseTailSize();
+    this.move();
+  }
+
   move() {
-    if (this.total === this.tail.length) {
+    let headBefore = { x: this.head.x, y: this.head.y };
+
+    this.head.x = this.head.x + this.xspeed;
+    this.head.y = this.head.y + this.yspeed;
+    this.directionChanged = true;
+
+    this.head.x = p.constrain(this.head.x, 0, p.width - this.size);
+    this.head.y = p.constrain(this.head.y, 0, p.height - this.size);
+
+    if (this.tail.length > 0) {
       for (let i = 0; i < this.tail.length - 1; i++) {
         this.tail[i] = this.tail[i + 1];
       }
+      this.tail[this.total - 1] = headBefore;
     }
-    this.tail[this.total - 1] = { x: this.x, y: this.y };
-
-    this.x = this.x + this.xspeed;
-    this.y = this.y + this.yspeed;
-    this.directionChanged = true;
-
-    this.x = p.constrain(this.x, 0, p.width - this.size);
-    this.y = p.constrain(this.y, 0, p.height - this.size);
   }
 
   draw() {
     const from = p.color('#B701C4');
     const to = p.color('#472D49');
     p.fill(from);
-    p.rect(this.x, this.y, this.size, this.size);
+    p.rect(this.head.x, this.head.y, this.size, this.size);
     for (let i = 0; i < this.tail.length; i++) {
       p.fill(p.lerpColor(to, from, (1 * i) / this.tail.length))
       p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
