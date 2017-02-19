@@ -29,11 +29,13 @@ let sketch = (p) => {
       debug('FPS', p.round(p.frameCount / (p.millis() / 1000)));
 
       if (snake.eat(food)) {
-        food = new Food(SIZE);
-      }      
+        do {
+          food = new Food(SIZE);
+        } while (snake.collides(food.x, food.y))
+      }
       snake.update();
       snake.dieOnCollision();
-    }, 300)        
+    }, 300)
     food.draw();
     snake.draw();
 
@@ -91,5 +93,5 @@ function tick(fn, interval) {
   if (timer < currMillis - interval || timer == 0) {
     fn();
     timer = currMillis;
-  }  
+  }
 }

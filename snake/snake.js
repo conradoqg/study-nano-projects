@@ -34,38 +34,53 @@ class Snake {
     this.yspeed = direction.y;
   }
 
-  dieOnCollision() {
-    let distancesToDeath = [];
-    let itsDeath = false;
+  collides(x, y, ignoreHead = false) {
+    let collides = false;
 
+    // Check head collision 
+    if (!ignoreHead) {
+      const distanceToDeath = p.dist(x, y, this.head.x, this.head.y);
+      if (distanceToDeath < 1) {
+        collides = true;
+      }
+    }
+
+    if (!collides) {
+      // Check tail collision 
+      for (let i = 0; i < this.tail.length - 1; i++) {
+        let tail = this.tail[i];
+        const distanceToDeath = p.dist(x, y, tail.x, tail.y);
+        if (distanceToDeath < 1) {
+          collides = true;
+          break;
+        }
+      }
+    }
+
+    return collides;
+  }
+
+  dieOnCollision() {
+    let collides = false;
     // Check boundaries collision    
     if ((this.head.x < 0 || this.head.x >= p.width) ||
       (this.head.y < 0 || this.head.y >= p.height)) {
-      itsDeath = true;
+      collides = true;
     }
 
-    // Check tail collision 
-    for (let i = 0; i < this.tail.length - 1; i++) {
-      let tail = this.tail[i];
-      const distanceToDeath = p.dist(this.head.x, this.head.y, tail.x, tail.y);
-      distancesToDeath.push(distanceToDeath);
-      if (distanceToDeath < 1) {
-        itsDeath = true;
-        break;
-      }
-    }    
+    // If the snake head collides with his body (ignoring head) or boundaries reset snake position, size, and direction
+    if (!collides) {
+      collides = this.collides(this.head.x, this.head.y, true);
+    }
 
-    // If it's death reset snake position, size, and direction
-    if (itsDeath) {
+    if (collides) {
       this.total = 0;
-      this.tail = [];      
+      this.tail = [];
       this.head = { x: 0, y: 0 };
       this.xspeed = this.size;
       this.yspeed = 0;
       console.log('it\'s dead');
     }
-
-    debug('distancesToDeath', distancesToDeath);
   }
 
   addTail() {
@@ -91,7 +106,7 @@ class Snake {
     // Move snake head by the current direction
     this.head.x = this.head.x + this.xspeed;
     this.head.y = this.head.y + this.yspeed;
-    
+
     // Move every tail piece to the next tail position and set the last to the previous head position
     if (this.tail.length > 0) {
       for (let i = 0; i < this.tail.length - 1; i++) {
