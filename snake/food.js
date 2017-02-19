@@ -1,6 +1,6 @@
 class Food {
     constructor(size) {
-        this.x = 0
+        this.x = 0;
         this.y = 0;
         this.size = size;
         this.setRandomLocation();
@@ -14,9 +14,11 @@ class Food {
     }
 
     draw() {
-        p.fill('#F4002B');
-        p.noStroke();
-        p.rect(this.x, this.y, this.size, this.size);
+        p.push();
+        p.stroke('#F4002B')
+        p.fill('#D21A3B');        
+        p.ellipse(this.x + (this.size / 2),  this.y + (this.size / 2), this.size/1.5, this.size/1.5);
+        p.pop();
     }
 }
 

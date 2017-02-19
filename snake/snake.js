@@ -120,12 +120,13 @@ class Snake {
     const to = p.color('#472D49');
 
     // Draw head
+    p.noStroke();
     p.fill(from);
     p.rect(this.head.x, this.head.y, this.size, this.size);
 
     // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
-      p.fill(p.lerpColor(to, from, (1 * i) / this.tail.length))
+      p.fill(p.lerpColor(to, from, (1 * i) / this.tail.length));
       p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
   }
