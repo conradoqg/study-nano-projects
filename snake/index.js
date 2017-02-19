@@ -32,7 +32,7 @@ let sketch = (p) => {
         food = new Food(SIZE);
       }      
       snake.update();
-      snake.dieOnColision();
+      snake.dieOnCollision();
     }, 300)        
     food.draw();
     snake.draw();

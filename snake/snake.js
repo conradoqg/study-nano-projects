@@ -34,18 +34,37 @@ class Snake {
     this.yspeed = direction.y;
   }
 
-  dieOnColision() {
+  dieOnCollision() {
     let distancesToDeath = [];
+    let itsDeath = false;
+
+    // Check boundaries collision    
+    if ((this.head.x < 0 || this.head.x >= p.width) ||
+      (this.head.y < 0 || this.head.y >= p.height)) {
+      itsDeath = true;
+    }
+
+    // Check tail collision 
     for (let i = 0; i < this.tail.length - 1; i++) {
       let tail = this.tail[i];
       const distanceToDeath = p.dist(this.head.x, this.head.y, tail.x, tail.y);
       distancesToDeath.push(distanceToDeath);
       if (distanceToDeath < 1) {
-        console.log('dead');
-        this.total = 0;
-        this.tail = [];
+        itsDeath = true;
+        break;
       }
+    }    
+
+    // If it's death reset snake position, size, and direction
+    if (itsDeath) {
+      this.total = 0;
+      this.tail = [];      
+      this.head = { x: 0, y: 0 };
+      this.xspeed = this.size;
+      this.yspeed = 0;
+      console.log('it\'s dead');
     }
+
     debug('distancesToDeath', distancesToDeath);
   }
 
@@ -60,7 +79,7 @@ class Snake {
     this.tailsToAdd--;
   }
 
-  update() {    
+  update() {
     if (this.tailsToAdd > 0) this.increaseTailSize();
     if (this.directionsToChange.length > 0) this.changeDirection();
     this.move();
@@ -72,10 +91,7 @@ class Snake {
     // Move snake head by the current direction
     this.head.x = this.head.x + this.xspeed;
     this.head.y = this.head.y + this.yspeed;
-
-    this.head.x = p.constrain(this.head.x, 0, p.width - this.size);
-    this.head.y = p.constrain(this.head.y, 0, p.height - this.size);
-
+    
     // Move every tail piece to the next tail position and set the last to the previous head position
     if (this.tail.length > 0) {
       for (let i = 0; i < this.tail.length - 1; i++) {
@@ -88,8 +104,12 @@ class Snake {
   draw() {
     const from = p.color('#B701C4');
     const to = p.color('#472D49');
+
+    // Draw head
     p.fill(from);
     p.rect(this.head.x, this.head.y, this.size, this.size);
+
+    // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
       p.fill(p.lerpColor(to, from, (1 * i) / this.tail.length))
       p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
