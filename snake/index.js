@@ -12,16 +12,12 @@ var sketch = function (p) {
   var snake = null;
   var food = null;
   var size = 20;
-  var x = 100;
-  var y = 100;
-  var movimentSpeed = 20;
-  var s;
   var timer = 0;
 
   p.setup = function () {
     p.createCanvas(600, 600);
     p.frameRate(60);
-    snake = new Snake(movimentSpeed, size);
+    snake = new Snake(size);
     food = new Food(size);
   };
 
@@ -51,13 +47,13 @@ var sketch = function (p) {
 
   p.keyPressed = function () {
     if (p.keyCode === p.UP_ARROW) {
-      snake.changeDirection(0, -movimentSpeed);
+      snake.changeDirection(0, -size);
     } else if (p.keyCode === p.DOWN_ARROW) {
-      snake.changeDirection(0, movimentSpeed);
+      snake.changeDirection(0, size);
     } else if (p.keyCode === p.RIGHT_ARROW) {
-      snake.changeDirection(movimentSpeed, 0);
+      snake.changeDirection(size, 0);
     } else if (p.keyCode === p.LEFT_ARROW) {
-      snake.changeDirection(-movimentSpeed, 0);
+      snake.changeDirection(-size, 0);
     }
   }
 };

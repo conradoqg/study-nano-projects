@@ -1,7 +1,7 @@
-function Snake(movimentSpeed, size) {
+function Snake(size) {
   this.x = 0;
   this.y = 0;
-  this.xspeed = movimentSpeed;
+  this.xspeed = size;
   this.yspeed = 0;
   this.size = size;
   this.total = 0;
@@ -9,8 +9,8 @@ function Snake(movimentSpeed, size) {
   this.directionChanged = true;
 
   this.eat = function (food) {
-    var d = p.dist(this.x, this.y, food.x, food.y);    
-    debug('distanceToEat', d);    
+    var d = p.dist(this.x, this.y, food.x, food.y);
+    debug('distanceToEat', d);
     if (d < 1) {
       this.total++;
       return true;
@@ -22,22 +22,22 @@ function Snake(movimentSpeed, size) {
   this.changeDirection = function (x, y) {
     if (this.directionChanged) {
       this.xspeed = x;
-      this.yspeed = y;      
+      this.yspeed = y;
       this.directionChanged = false;
-    }    
+    }
   }
 
   this.dieOnColision = function () {
     var distanceToDeath = [];
     for (var i = 0; i < this.tail.length; i++) {
       var pos = this.tail[i];
-      var d = p.dist(this.x, this.y, pos.x, pos.y);            
-      distanceToDeath.push(d);      
-      if (d < 1) {        
+      var d = p.dist(this.x, this.y, pos.x, pos.y);
+      distanceToDeath.push(d);
+      if (d < 1) {
         this.total = 0;
         this.tail = [];
       }
-    }    
+    }
     debug('distanceToDeath', distanceToDeath);
   }
 
@@ -57,11 +57,11 @@ function Snake(movimentSpeed, size) {
     this.y = p.constrain(this.y, 0, p.height - size);
   }
 
-  this.draw = function () {    
+  this.draw = function () {
     p.fill(255);
     for (var i = 0; i < this.tail.length; i++) {
       p.rect(this.tail[i].x, this.tail[i].y, size, size);
-    }        
+    }
     p.rect(this.x, this.y, size, size);
 
   }
