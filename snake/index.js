@@ -8,15 +8,14 @@ const Food = require('./food.js');
 
 let sketch = (p) => {
   window.p = p;
-  const SIZE = 20;  
+  const SIZE = 20;
 
   let snake = null;
-  let food = null;  
-  let timer = 0;
+  let food = null;
 
   p.setup = () => {
     p.createCanvas(600, 600);
-    p.frameRate(60);
+    p.frameRate(30);
     snake = new Snake(SIZE);
     food = new Food(SIZE);
   };
@@ -24,8 +23,9 @@ let sketch = (p) => {
   p.draw = () => {
     p.background('#474749');
 
-    const currMillis = p.millis();
-    if (timer < currMillis - 300 || timer == 0) {
+    tick(() => {
+      debug('FPS', p.round(p.frameCount / (p.millis() / 1000)));
+
       if (snake.eat(food)) {
         food = new Food(SIZE);
       }
@@ -83,3 +83,12 @@ function debug(varName, variable) {
 }
 
 window.debug = debug;
+
+let timer = 0;
+function tick(fn, interval) {
+  const currMillis = p.millis();
+  if (timer < currMillis - interval || timer == 0) {
+    fn();
+    timer = currMillis;
+  }  
+}
