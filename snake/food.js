@@ -1,21 +1,22 @@
-function Food(size) {
-    this.x = 0
-    this.y = 0;
-    this.size = size;
-
-    this.setRandomLocation = function () {
-        var cols = p.floor(p.width / size);
-        var rows = p.floor(p.height / size);
-        this.x = p.floor(p.random(cols)) * size;
-        this.y = p.floor(p.random(rows)) * size;
+class Food {
+    constructor(size) {
+        this.x = 0
+        this.y = 0;
+        this.size = size;
+        this.setRandomLocation();
     }
 
-    this.draw = function () {
+    setRandomLocation() {
+        let cols = p.floor(p.width / this.size);
+        let rows = p.floor(p.height / this.size);
+        this.x = p.floor(p.random(cols)) * this.size;
+        this.y = p.floor(p.random(rows)) * this.size;
+    }
+
+    draw() {
         p.fill(255, 0, 100);
-        p.rect(this.x, this.y, size, size);
+        p.rect(this.x, this.y, this.size, this.size);
     }
-
-    this.setRandomLocation();
 }
 
 module.exports = Food;

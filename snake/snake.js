@@ -1,17 +1,19 @@
-function Snake(size) {
-  this.x = 0;
-  this.y = 0;
-  this.xspeed = size;
-  this.yspeed = 0;
-  this.size = size;
-  this.total = 0;
-  this.tail = [];
-  this.directionChanged = true;
+class Snake {
+  constructor(size) {
+    this.x = 0;
+    this.y = 0;
+    this.xspeed = size;
+    this.yspeed = 0;
+    this.size = size;
+    this.total = 0;
+    this.tail = [];
+    this.directionChanged = true;
+  }
 
-  this.eat = function (food) {
-    var d = p.dist(this.x, this.y, food.x, food.y);
-    debug('distanceToEat', d);
-    if (d < 1) {
+  eat(food) {
+    let distanceToFood = p.dist(this.x, this.y, food.x, food.y);
+    debug('distanceToFood', distanceToFood);
+    if (distanceToFood < 1) {
       this.total++;
       return true;
     } else {
@@ -19,7 +21,7 @@ function Snake(size) {
     }
   }
 
-  this.changeDirection = function (x, y) {
+  changeDirection(x, y) {
     if (this.directionChanged) {
       this.xspeed = x;
       this.yspeed = y;
@@ -27,23 +29,23 @@ function Snake(size) {
     }
   }
 
-  this.dieOnColision = function () {
-    var distanceToDeath = [];
-    for (var i = 0; i < this.tail.length; i++) {
-      var pos = this.tail[i];
-      var d = p.dist(this.x, this.y, pos.x, pos.y);
-      distanceToDeath.push(d);
-      if (d < 1) {
+  dieOnColision() {
+    let distancesToDeath = [];
+    for (let i = 0; i < this.tail.length; i++) {
+      let pos = this.tail[i];
+      const distanceToDeath = p.dist(this.x, this.y, pos.x, pos.y);
+      distancesToDeath.push(distanceToDeath);
+      if (distanceToDeath < 1) {
         this.total = 0;
         this.tail = [];
       }
     }
-    debug('distanceToDeath', distanceToDeath);
+    debug('distancesToDeath', distancesToDeath);
   }
 
-  this.move = function () {
+  move() {
     if (this.total === this.tail.length) {
-      for (var i = 0; i < this.tail.length - 1; i++) {
+      for (let i = 0; i < this.tail.length - 1; i++) {
         this.tail[i] = this.tail[i + 1];
       }
     }
@@ -53,16 +55,16 @@ function Snake(size) {
     this.y = this.y + this.yspeed;
     this.directionChanged = true;
 
-    this.x = p.constrain(this.x, 0, p.width - size);
-    this.y = p.constrain(this.y, 0, p.height - size);
+    this.x = p.constrain(this.x, 0, p.width - this.size);
+    this.y = p.constrain(this.y, 0, p.height - this.size);
   }
 
-  this.draw = function () {
+  draw() {
     p.fill(255);
-    for (var i = 0; i < this.tail.length; i++) {
-      p.rect(this.tail[i].x, this.tail[i].y, size, size);
+    for (let i = 0; i < this.tail.length; i++) {
+      p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
-    p.rect(this.x, this.y, size, size);
+    p.rect(this.x, this.y, this.size, this.size);
 
   }
 }
