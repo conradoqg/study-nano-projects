@@ -20,16 +20,32 @@ let sketch = (p) => {
   let totalCells = p.floor(WIDTH / SIZE) * p.floor(HEIGHT / SIZE);
 
   p.setup = () => {
-    p.createCanvas(WIDTH, HEIGHT);
+    p.createCanvas(WIDTH, HEIGHT + SIZE);
+    p.offsetX = 0;
+    p.offsetY = SIZE;
     p.frameRate(30);
     snake = new Snake(SIZE);
     food = new Food(SIZE);
   };
 
   p.draw = () => {
+    // Background
     p.background('#474749');
-    tickSpeed = 300 - p.floor(((250 * snake.total) / totalCells))
 
+    // Top bar
+    p.fill('#FF7600');
+    p.rect(0, 0, p.width, SIZE);
+
+    // Top bar text    
+    p.textSize(14)
+    p.fill('#6F5945');
+    p.textAlign(p.RIGHT, p.CENTER);
+    p.text('Points: ' + snake.total, 4, 2, p.width - 4, SIZE - 2);
+    p.textAlign(p.LEFT, p.CENTER);
+    p.text('Mini snake game', 4, 2, p.width - 4, SIZE - 2);
+
+
+    tickSpeed = 300 - p.floor(((250 * snake.total) / totalCells))
     tick(() => {
       if (snake.eat(food)) {
         do {
@@ -37,7 +53,7 @@ let sketch = (p) => {
         } while (snake.collides(food.x, food.y))
       }
       snake.update();
-      snake.dieOnCollision();            
+      snake.dieOnCollision();
     }, tickSpeed)
     food.draw();
     snake.draw();

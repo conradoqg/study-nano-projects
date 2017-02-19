@@ -2,7 +2,7 @@ class Snake {
   constructor(size) {
     this.xspeed = size;
     this.yspeed = 0;
-    this.head = { x: 0, y: 0 };
+    this.head = { x: p.offsetX, y: p.offsetY };
     this.tail = [];
     this.size = size;
     this.total = 1;
@@ -62,8 +62,8 @@ class Snake {
   dieOnCollision() {
     let collides = false;
     // Check boundaries collision    
-    if ((this.head.x < 0 || this.head.x >= p.width) ||
-      (this.head.y < 0 || this.head.y >= p.height)) {
+    if ((this.head.x < p.offsetX || this.head.x >= p.width + p.offsetX) ||
+      (this.head.y < p.offsetY || this.head.y >= p.height + p.offsetY)) {
       collides = true;
     }
 
@@ -75,7 +75,7 @@ class Snake {
     if (collides) {
       this.total = 1;
       this.tail = [];
-      this.head = { x: 0, y: 0 };
+      this.head = { x: p.offsetX, y: p.offsetY };
       this.xspeed = this.size;
       this.yspeed = 0;
       console.log('it\'s dead');
