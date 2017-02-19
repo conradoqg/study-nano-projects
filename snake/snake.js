@@ -22,10 +22,12 @@ class Snake {
   }
 
   changeDirection(x, y) {
-    if (this.directionChanged) {
-      this.xspeed = x;
-      this.yspeed = y;
-      this.directionChanged = false;
+    if (x != this.xspeed * -1 && y != this.yspeed * -1) {
+      if (this.directionChanged) {
+        this.xspeed = x;
+        this.yspeed = y;
+        this.directionChanged = false;
+      }
     }
   }
 
