@@ -1,0 +1,15 @@
+{
+  "name": "snake",
+  "version": "0.0.1",
+  "description": "Mini snake game",
+  "main": "index.js",
+  "dependencies": {
+    "budo": "^9.4.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "budo index.js -dir . -l -o"
+  },
+  "author": "Conrado Quilles Gomes <conradoqg@gmail.com>",
+  "license": "MIT"
+}
