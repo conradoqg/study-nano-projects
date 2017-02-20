@@ -40,7 +40,7 @@ let sketch = (p) => {
     p.textSize(14)
     p.fill('#6F5945');
     p.textAlign(p.RIGHT, p.CENTER);
-    p.text('Points: ' + snake.total, 4, 2, p.width - 4, SIZE - 2);
+    p.text('Score: ' + snake.total, 4, 2, p.width - 4, SIZE - 2);
     p.textAlign(p.LEFT, p.CENTER);
     p.text('Mini snake game', 4, 2, p.width - 4, SIZE - 2);
 
