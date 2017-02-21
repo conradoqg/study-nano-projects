@@ -1,5 +1,5 @@
 const StateStack = require('./stateStack.js');
-const PlayState = require('./playState.js');
+const MenuState = require('./menuState.js');
 
 class Game {
     constructor(canvasElementID) {
@@ -20,7 +20,7 @@ class Game {
         this.p5.offsetY = this.config.cellSize;
         this.p5.frameRate(30);        
         this.p5.draw = this.draw.bind(this);        
-        this.stateManager.push(new PlayState(this));
+        this.stateManager.push(new MenuState(this));
     }
 
     draw() {

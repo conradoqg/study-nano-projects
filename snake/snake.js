@@ -80,6 +80,8 @@ class Snake {
       this.yspeed = 0;
       console.log('it\'s dead');
     }
+
+    return collides;
   }
 
   addTail() {

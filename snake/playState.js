@@ -1,6 +1,7 @@
 const State = require('./state.js');
 const Snake = require('./snake.js');
 const Food = require('./food.js');
+const ScoreState = require('./scoreState.js');
 
 class PlayState extends State {
     constructor(game) {
@@ -14,6 +15,8 @@ class PlayState extends State {
     }
 
     onEnter() {
+        this.previousMousePressed = p.mousePressed;
+        this.previousKeyPressed = p.keyPressed;
         p.mousePressed = () => {
             this.snake.addTail();
         }
@@ -32,8 +35,8 @@ class PlayState extends State {
     }
 
     onExit() {
-        p.mousePressed = null;
-        p.keyPressed = null;
+        p.mousePressed = this.previousMousePressed;
+        p.keyPressed = this.previousKeyPressed;
     }
 
     update() {
@@ -45,11 +48,17 @@ class PlayState extends State {
                 } while (this.snake.collides(this.food.x, this.food.y))
             }
             this.snake.update();
-            this.snake.dieOnCollision();
+            const score = this.snake.total;
+            if (this.snake.dieOnCollision()) {
+                this.game.stateManager.pop();
+                this.game.stateManager.push(new ScoreState(this.game, score));
+            }
         }, this.tickSpeed)
     }
 
     render() {
+        p.push();
+
         // Background
         p.background('#474749');
 
@@ -61,12 +70,14 @@ class PlayState extends State {
         p.textSize(14)
         p.fill('#6F5945');
         p.textAlign(p.RIGHT, p.CENTER);
-        p.text('Score: ' + this.snake.total, 4, 2, p.width - 4, this.game.config.cellSize - 2);
+        p.text('Score: ' + (this.snake.total - 1), 4, 2, p.width - 4, this.game.config.cellSize - 2);
         p.textAlign(p.LEFT, p.CENTER);
         p.text('Mini snake game', 4, 2, p.width - 4, this.game.config.cellSize - 2);
 
         this.food.render();
         this.snake.render();
+
+        p.pop();
     }
 }
 
