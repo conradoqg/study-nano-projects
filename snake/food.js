@@ -7,10 +7,10 @@ class Food {
     }
 
     setRandomLocation() {
-        let cols = p.floor((p.width - p.offsetX) / this.size);
-        let rows = p.floor((p.height - p.offsetY) / this.size);
-        this.x = (p.floor(p.random(cols)) * this.size) + p.offsetX;
-        this.y = (p.floor(p.random(rows)) * this.size) + p.offsetY;
+        let cols = Math.floor((p.width - p.offsetX) / this.size);
+        let rows = Math.floor((p.height - p.offsetY) / this.size);
+        this.x = (Math.floor(p.random(cols)) * this.size) + p.offsetX;
+        this.y = (Math.floor(p.random(rows)) * this.size) + p.offsetY;
     }
 
     draw() {

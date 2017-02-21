@@ -17,7 +17,7 @@ let sketch = (p) => {
   let snake = null;
   let food = null;
   let tickSpeed = 50;
-  let totalCells = p.floor(WIDTH / SIZE) * p.floor(HEIGHT / SIZE);
+  let totalCells = Math.floor(WIDTH / SIZE) * Math.floor(HEIGHT / SIZE);
 
   p.setup = () => {
     p.createCanvas(WIDTH, HEIGHT + SIZE);
@@ -45,7 +45,7 @@ let sketch = (p) => {
     p.text('Mini snake game', 4, 2, p.width - 4, SIZE - 2);
 
 
-    tickSpeed = 300 - p.floor(((250 * snake.total) / totalCells))
+    tickSpeed = 300 - Math.floor(((250 * snake.total) / totalCells))
     tick(() => {
       if (snake.eat(food)) {
         do {
