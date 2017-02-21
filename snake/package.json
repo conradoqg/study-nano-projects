@@ -4,11 +4,13 @@
   "description": "Mini snake game",
   "main": "index.js",
   "dependencies": {
-    "budo": "^9.4.7"
+    "budo": "^9.4.7",
+    "browserify": "^14.1.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "budo index.js -dir . -l --babelyfy -o"
+    "start": "budo index.js:dist/bundle.js -dir . -l -o",
+    "dist": "browserify ./index.js -o dist/bundle.js"
   },
   "author": "Conrado Quilles Gomes <conradoqg@gmail.com>",
   "license": "MIT"
