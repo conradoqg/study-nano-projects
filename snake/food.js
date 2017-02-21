@@ -13,7 +13,7 @@ class Food {
         this.y = (Math.floor(p.random(rows)) * this.size) + p.offsetY;
     }
 
-    draw() {
+    render() {
         p.push();
         p.stroke('#F4002B')
         p.fill('#D21A3B');

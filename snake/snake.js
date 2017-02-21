@@ -115,7 +115,7 @@ class Snake {
     }
   }
 
-  draw() {
+  render() {
     const from = p.color('#B701C4');
     const to = p.color('#472D49');
 
