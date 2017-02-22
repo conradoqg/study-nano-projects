@@ -9,18 +9,18 @@ class MenuState extends State {
     }
 
     onEnter() {
-        p.mousePressed = () => {
+        p5.mousePressed = () => {
             this.play();
         }
 
-        p.keyPressed = () => {
+        p5.keyPressed = () => {
             this.play();            
         }
     }
 
     onExit() {
-        p.mousePressed = null;
-        p.keyPressed = null;
+        p5.mousePressed = null;
+        p5.keyPressed = null;
     }
 
     update() {}
@@ -30,23 +30,24 @@ class MenuState extends State {
     }
 
     render() {
-        p.push();
+        p5.push();
 
         // Background
-        p.background(p.cssColor('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-primary-4'));
 
-        p.textSize(60);
-        p.fill(p.cssColor('.color-complement-2'));
-        p.textAlign(p.CENTER,p.BOTTOM);
-        p.text('Snake Game', 0, 0, this.game.config.width, this.game.config.height / 2);
+        // Texts
+        p5.textSize(60);
+        p5.fill(p5.colorFromSelector('.color-complement-2'));
+        p5.textAlign(p5.CENTER,p5.BOTTOM);
+        p5.text('Snake Game', 0, 0, this.game.config.width, this.game.config.height / 2);
 
-        p.textSize(20);
-        p.fill(p.cssColor('.color-complement-3'));
-        p.textAlign(p.CENTER,p.TOP);
-        p.textStyle(p.ITALIC);
-        p.text('Press any key to start...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2 );        
+        p5.textSize(20);
+        p5.fill(p5.colorFromSelector('.color-complement-3'));
+        p5.textAlign(p5.CENTER,p5.TOP);
+        p5.textStyle(p5.ITALIC);
+        p5.text('Press any key to start...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2 );        
 
-        p.pop();
+        p5.pop();
     }
 }
 

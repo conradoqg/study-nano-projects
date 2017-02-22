@@ -8,14 +8,14 @@ class ScoreState extends State {
     }
 
     onEnter() {
-        this.previousMousePressed = p.mousePressed;
-        this.previousKeyPressed = p.keyPressed;
+        this.previousMousePressed = p5.mousePressed;
+        this.previousKeyPressed = p5.keyPressed;
 
-        p.mousePressed = () => {
+        p5.mousePressed = () => {
             this.return();
         }
 
-        p.keyPressed = () => {
+        p5.keyPressed = () => {
             this.return();
         }
     }
@@ -25,28 +25,29 @@ class ScoreState extends State {
     }
 
     onExit() {
-        p.mousePressed = this.previousMousePressed;
-        p.keyPressed = this.previousKeyPressed;
+        p5.mousePressed = this.previousMousePressed;
+        p5.keyPressed = this.previousKeyPressed;
     }
 
     render() {
-        p.push();
+        p5.push();
 
         // Background
-        p.background(p.cssColor('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-primary-4'));
 
-        p.textSize(60);
-        p.fill(p.cssColor('.color-complement-2'));
-        p.textAlign(p.CENTER, p.BOTTOM);
-        p.text('Score: ' + (this.score - 1), 0, 0, this.game.config.width, this.game.config.height / 2);
+        // Texts
+        p5.textSize(60);
+        p5.fill(p5.colorFromSelector('.color-complement-2'));
+        p5.textAlign(p5.CENTER, p5.BOTTOM);
+        p5.text('Score: ' + (this.score - 1), 0, 0, this.game.config.width, this.game.config.height / 2);
 
-        p.textSize(20);
-        p.fill(p.cssColor('.color-complement-3'));
-        p.textAlign(p.CENTER, p.TOP);
-        p.textStyle(p.ITALIC);
-        p.text('Press any key to return to menu...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2);
+        p5.textSize(20);
+        p5.fill(p5.colorFromSelector('.color-complement-3'));
+        p5.textAlign(p5.CENTER, p5.TOP);
+        p5.textStyle(p5.ITALIC);
+        p5.text('Press any key to return to menu...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2);
 
-        p.pop();
+        p5.pop();
     }
 
 }

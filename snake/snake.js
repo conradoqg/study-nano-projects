@@ -17,7 +17,7 @@ class Snake {
   }
 
   eat(food) {
-    let distanceToFood = p.dist(this.head.x, this.head.y, food.x, food.y);
+    let distanceToFood = p5.dist(this.head.x, this.head.y, food.x, food.y);
     if (distanceToFood < 1) {
       this.increaseTailSize();
       return true;
@@ -31,7 +31,7 @@ class Snake {
 
     // Check head collision 
     if (!ignoreHead) {
-      const distanceToDeath = p.dist(x, y, this.head.x, this.head.y);
+      const distanceToDeath = p5.dist(x, y, this.head.x, this.head.y);
       if (distanceToDeath < 1) {
         collides = true;
       }
@@ -41,7 +41,7 @@ class Snake {
       // Check tail collision 
       for (let i = 0; i < this.tail.length - 1; i++) {
         let tail = this.tail[i];
-        const distanceToDeath = p.dist(x, y, tail.x, tail.y);
+        const distanceToDeath = p5.dist(x, y, tail.x, tail.y);
         if (distanceToDeath < 1) {
           collides = true;
           break;
@@ -55,9 +55,9 @@ class Snake {
   dieOnCollision() {
     let collides = false;
 
-    // Check boundaries collision    
-    if ((this.head.x < this.xOffset || this.head.x >= p.width + this.xOffset) ||
-      (this.head.y < this.yOffset || this.head.y >= p.height + this.yOffset)) {
+    // Check game boundaries collision    
+    if ((this.head.x < this.xOffset || this.head.x >= p5.width + this.xOffset) ||
+      (this.head.y < this.yOffset || this.head.y >= p5.height + this.yOffset)) {
       collides = true;
     }
 
@@ -121,18 +121,18 @@ class Snake {
   }
 
   render() {
-    const from = p.color(p.cssColor('.color-secondary-2-4'));
-    const to = p.color(p.cssColor('.color-secondary-2-1'));
+    const from = p5.color(p5.colorFromSelector('.color-secondary-2-4'));
+    const to = p5.color(p5.colorFromSelector('.color-secondary-2-1'));
 
     // Draw head
-    p.noStroke();
-    p.fill(to);
-    p.rect(this.head.x, this.head.y, this.size, this.size);
+    p5.noStroke();
+    p5.fill(to);
+    p5.rect(this.head.x, this.head.y, this.size, this.size);
 
     // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
-      p.fill(p.lerpColor(from, to, (1 * i) / this.tail.length));
-      p.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+      p5.fill(p5.lerpColor(from, to, (1 * i) / this.tail.length));
+      p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
   }
 }

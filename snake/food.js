@@ -9,18 +9,18 @@ class Food {
     }
 
     setRandomLocation() {
-        let cols = Math.floor((p.width - this.xOffset) / this.size);
-        let rows = Math.floor((p.height - this.yOffset) / this.size);
-        this.x = (Math.floor(p.random(cols)) * this.size) + this.xOffset;
-        this.y = (Math.floor(p.random(rows)) * this.size) + this.yOffset;
+        let cols = Math.floor((p5.width - this.xOffset) / this.size);
+        let rows = Math.floor((p5.height - this.yOffset) / this.size);
+        this.x = (Math.floor(p5.random(cols)) * this.size) + this.xOffset;
+        this.y = (Math.floor(p5.random(rows)) * this.size) + this.yOffset;
     }
 
     render() {
-        p.push();                     
-        p.stroke(p.cssColor('.color-primary-1'))
-        p.fill(p.cssColor('.color-primary-2'));
-        p.ellipse(this.x + (this.size / 2), this.y + (this.size / 2), this.size / 1.5, this.size / 1.5);
-        p.pop();
+        p5.push();                     
+        p5.stroke(p5.colorFromSelector('.color-primary-1'))
+        p5.fill(p5.colorFromSelector('.color-primary-2'));
+        p5.ellipse(this.x + (this.size / 2), this.y + (this.size / 2), this.size / 1.5, this.size / 1.5);
+        p5.pop();
     }
 }
 
