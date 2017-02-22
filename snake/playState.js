@@ -8,10 +8,12 @@ class PlayState extends State {
         super();
         this.name = 'playstate';
         this.game = game;
-        this.snake = new Snake(this.game.config.cellSize);
-        this.food = new Food(this.game.config.cellSize);
+        this.xOffset = 0;
+        this.yOffset = this.game.config.cellSize;
+        this.snake = new Snake(this.xOffset, this.yOffset, this.game.config.cellSize);
+        this.food = new Food(this.xOffset, this.yOffset, this.game.config.cellSize);
         this.tickSpeed = 50;
-        this.totalCells = Math.floor(this.game.config.width / this.game.config.cellSize) * Math.floor(this.game.config.height / this.game.config.cellSize);
+        this.totalCells = Math.floor(p.width / this.game.config.cellSize) * Math.floor(p.height / this.game.config.cellSize);
     }
 
     onEnter() {
@@ -44,7 +46,7 @@ class PlayState extends State {
         p.tick(() => {
             if (this.snake.eat(this.food)) {
                 do {
-                    this.food = new Food(this.game.config.cellSize);
+                    this.food.setRandomLocation();
                 } while (this.snake.collides(this.food.x, this.food.y))
             }
             this.snake.update();
@@ -64,7 +66,7 @@ class PlayState extends State {
 
         // Top bar
         p.fill(p.cssColor('.color-secondary-1-2'));
-        p.rect(0, 0, this.game.config.width, this.game.config.cellSize);
+        p.rect(0, 0, p.width, this.game.config.cellSize);
 
         // Top bar text    
         p.textSize(14)
@@ -74,8 +76,9 @@ class PlayState extends State {
         p.textAlign(p.LEFT, p.CENTER);
         p.text('Mini snake game', 4, 2, p.width - 4, this.game.config.cellSize - 2);
 
-        this.food.render();
+        // Render food and snake        
         this.snake.render();
+        this.food.render();
 
         p.pop();
     }

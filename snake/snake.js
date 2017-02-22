@@ -1,13 +1,19 @@
 class Snake {
-  constructor(size) {
-    this.xspeed = size;
-    this.yspeed = 0;
-    this.head = { x: p.offsetX, y: p.offsetY };
+  constructor(xOffset, yOffset, size) {    
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;        
+    this.size = size;            
+    this.setInitialState();
+  }
+
+  setInitialState() {
+    this.total = 1; // 1 counting the head
     this.tail = [];
-    this.size = size;
-    this.total = 1;
-    this.tailsToAdd = 0;
+    this.head = { x: this.xOffset, y: this.yOffset };
+    this.xSpeed = this.size;
+    this.ySpeed = 0;
     this.directionsToChange = [];
+    this.tailsToAdd = 0;
   }
 
   eat(food) {
@@ -18,20 +24,7 @@ class Snake {
     } else {
       return false;
     }
-  }
-
-  addDirectionChange(x, y) {
-    var predicate = (this.directionsToChange.length > 0 ? this.directionsToChange[this.directionsToChange.length - 1] : { x: this.xspeed, y: this.yspeed });
-    if (x != predicate.x * -1 || y != predicate.y * -1) {
-      this.directionsToChange.unshift({ x, y });
-    }
-  }
-
-  changeDirection() {
-    let direction = this.directionsToChange.pop();
-    this.xspeed = direction.x;
-    this.yspeed = direction.y;
-  }
+  }  
 
   collides(x, y, ignoreHead = false) {
     let collides = false;
@@ -61,41 +54,51 @@ class Snake {
 
   dieOnCollision() {
     let collides = false;
+
     // Check boundaries collision    
-    if ((this.head.x < p.offsetX || this.head.x >= p.width + p.offsetX) ||
-      (this.head.y < p.offsetY || this.head.y >= p.height + p.offsetY)) {
+    if ((this.head.x < this.xOffset || this.head.x >= p.width + this.xOffset) ||
+      (this.head.y < this.yOffset || this.head.y >= p.height + this.yOffset)) {
       collides = true;
     }
 
-    // If the snake head collides with his body (ignoring head) or boundaries reset snake position, size, and direction
+    // If the snake head collides with his body (ignoring head) or the game boundaries, reset snake position, size, and direction
     if (!collides) {
       collides = this.collides(this.head.x, this.head.y, true);
     }
 
-    if (collides) {
-      this.total = 1;
-      this.tail = [];
-      this.head = { x: p.offsetX, y: p.offsetY };
-      this.xspeed = this.size;
-      this.yspeed = 0;
-      console.log('it\'s dead');
-    }
+    if (collides) this.setInitialState();
 
     return collides;
   }
 
   addTail() {
+    // Adds tail increase to buffer
     this.tailsToAdd++;
   }
 
-  increaseTailSize() {
+  increaseTailSize() {    
     let newTail = { x: this.head.x, y: this.head.y };
     this.total++;
     this.tail.unshift(newTail);
     this.tailsToAdd--;
   }
 
+  addDirectionChange(x, y) {
+    // Adds direction change to buffer
+    var predicate = (this.directionsToChange.length > 0 ? this.directionsToChange[this.directionsToChange.length - 1] : { x: this.xSpeed, y: this.ySpeed });
+    if (x != predicate.x * -1 || y != predicate.y * -1) {
+      this.directionsToChange.unshift({ x, y });
+    }
+  }
+
+  changeDirection() {
+    let direction = this.directionsToChange.pop();
+    this.xSpeed = direction.x;
+    this.ySpeed = direction.y;
+  }
+
   update() {
+    // Run buffered actions
     if (this.tailsToAdd > 0) this.increaseTailSize();
     if (this.directionsToChange.length > 0) this.changeDirection();
     this.move();
@@ -105,8 +108,8 @@ class Snake {
     let headBefore = { x: this.head.x, y: this.head.y };
 
     // Move snake head by the current direction
-    this.head.x = this.head.x + this.xspeed;
-    this.head.y = this.head.y + this.yspeed;
+    this.head.x = this.head.x + this.xSpeed;
+    this.head.y = this.head.y + this.ySpeed;
 
     // Move every tail piece to the next tail position and set the last to the previous head position
     if (this.tail.length > 0) {

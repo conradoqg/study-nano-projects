@@ -1,16 +1,18 @@
 class Food {
-    constructor(size) {
-        this.x = p.offsetX;
-        this.y = p.offsetY;
+    constructor(xOffset, yOffset, size) {
+        this.x = xOffset;
+        this.y = yOffset;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
         this.size = size;
         this.setRandomLocation();
     }
 
     setRandomLocation() {
-        let cols = Math.floor((p.width - p.offsetX) / this.size);
-        let rows = Math.floor((p.height - p.offsetY) / this.size);
-        this.x = (Math.floor(p.random(cols)) * this.size) + p.offsetX;
-        this.y = (Math.floor(p.random(rows)) * this.size) + p.offsetY;
+        let cols = Math.floor((p.width - this.xOffset) / this.size);
+        let rows = Math.floor((p.height - this.yOffset) / this.size);
+        this.x = (Math.floor(p.random(cols)) * this.size) + this.xOffset;
+        this.y = (Math.floor(p.random(rows)) * this.size) + this.yOffset;
     }
 
     render() {

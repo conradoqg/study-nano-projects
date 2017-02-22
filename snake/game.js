@@ -15,10 +15,8 @@ class Game {
     }
 
     setup() {
-        this.p5.createCanvas(this.config.width, this.config.height + this.config.cellSize);
-        this.p5.offsetX = 0;
-        this.p5.offsetY = this.config.cellSize;
-        this.p5.frameRate(30);
+        this.p5.createCanvas(this.config.width, this.config.height + this.config.cellSize);        
+        this.p5.frameRate(this.config.FPS);
         this.p5.draw = this.draw.bind(this);
         this.stateManager.push(new MenuState(this));
     }
