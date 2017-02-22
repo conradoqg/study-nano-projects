@@ -3,7 +3,7 @@
 
 Based on the work of Daniel Shiffman: http://codingtra.in
 
-You can play with it [here](https://cdn.rawgit.com/conradoqg/study-nano-projects/766aa15d/snake/index.html).
+You can play with it [here](https://rawgit.com/conradoqg/study-nano-projects/master/snake/index.html).
 
 ## Development
 
