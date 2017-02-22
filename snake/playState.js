@@ -60,15 +60,15 @@ class PlayState extends State {
         p.push();
 
         // Background
-        p.background('#474749');
+        p.background(p.cssColor('.color-primary-4'));
 
         // Top bar
-        p.fill('#FF7600');
+        p.fill(p.cssColor('.color-secondary-1-2'));
         p.rect(0, 0, this.game.config.width, this.game.config.cellSize);
 
         // Top bar text    
         p.textSize(14)
-        p.fill('#6F5945');
+        p.fill(p.cssColor('.color-secondary-1-4'));
         p.textAlign(p.RIGHT, p.CENTER);
         p.text('Score: ' + (this.snake.total - 1), 4, 2, p.width - 4, this.game.config.cellSize - 2);
         p.textAlign(p.LEFT, p.CENTER);

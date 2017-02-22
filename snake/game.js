@@ -11,15 +11,15 @@ class Game {
             canvasElementID: canvasElementID
         }
 
-        this.stateManager = new StateStack();        
+        this.stateManager = new StateStack();
     }
 
     setup() {
         this.p5.createCanvas(this.config.width, this.config.height + this.config.cellSize);
         this.p5.offsetX = 0;
         this.p5.offsetY = this.config.cellSize;
-        this.p5.frameRate(30);        
-        this.p5.draw = this.draw.bind(this);        
+        this.p5.frameRate(30);
+        this.p5.draw = this.draw.bind(this);
         this.stateManager.push(new MenuState(this));
     }
 
@@ -40,15 +40,16 @@ class Game {
         let self = this;
         p5.disableFriendlyErrors = true;
         new p5((p5instance) => {
-            p5instance.setup = self.setup.bind(self),
-                p5instance.tick = tick;
-                window.p = p5instance;
-                self.p5 = p5instance;                
+            p5instance.setup = self.setup.bind(self);
+            p5instance.tick = tick;
+            p5instance.cssColor = findColorProperty;
+            window.p = p5instance;
+            self.p5 = p5instance;
         }, this.config.canvasElementID);
     }
 
     init() {
-        this.setupP5();        
+        this.setupP5();
     }
 }
 
@@ -59,6 +60,20 @@ function tick(fn, interval) {
         fn();
         timer = currMillis;
     }
+}
+
+let colorCache = [];
+function findColorProperty(selector) {
+    if (colorCache[selector] != null) return colorCache[selector];
+    rules = document.styleSheets[0].cssRules;
+    for (i in rules) {        
+        if (rules[i].selectorText == selector) {
+            let color = rules[i].style.color;
+            colorCache[selector] = color;
+            return color; // Get color property specifically
+        }
+    }
+    return "#FFFFFF";
 }
 
 module.exports = Game;

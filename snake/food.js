@@ -14,9 +14,9 @@ class Food {
     }
 
     render() {
-        p.push();
-        p.stroke('#F4002B')
-        p.fill('#D21A3B');
+        p.push();                     
+        p.stroke(p.cssColor('.color-primary-1'))
+        p.fill(p.cssColor('.color-primary-2'));
         p.ellipse(this.x + (this.size / 2), this.y + (this.size / 2), this.size / 1.5, this.size / 1.5);
         p.pop();
     }

@@ -16,7 +16,7 @@ class ScoreState extends State {
         }
 
         p.keyPressed = () => {
-            this.return();            
+            this.return();
         }
     }
 
@@ -33,18 +33,18 @@ class ScoreState extends State {
         p.push();
 
         // Background
-        p.background('#474749');
+        p.background(p.cssColor('.color-primary-4'));
 
         p.textSize(60);
-        p.fill('#45E700');
-        p.textAlign(p.CENTER,p.BOTTOM);
+        p.fill(p.cssColor('.color-complement-2'));
+        p.textAlign(p.CENTER, p.BOTTOM);
         p.text('Score: ' + (this.score - 1), 0, 0, this.game.config.width, this.game.config.height / 2);
 
         p.textSize(20);
-        p.fill('#4AC117');
-        p.textAlign(p.CENTER,p.TOP);
+        p.fill(p.cssColor('.color-complement-3'));
+        p.textAlign(p.CENTER, p.TOP);
         p.textStyle(p.ITALIC);
-        p.text('Press any key to return to menu...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2 );         
+        p.text('Press any key to return to menu...', 0, this.game.config.height / 2, this.game.config.width, this.game.config.height / 2);
 
         p.pop();
     }
