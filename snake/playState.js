@@ -15,6 +15,7 @@ class PlayState extends State {
         this.tickSpeed = this.minTickSpeed = 50;
         this.maxTickSpeed = 300;
         this.totalCells = Math.floor(p5.width / this.game.config.cellSize) * Math.floor(p5.height / this.game.config.cellSize);
+        this.paused = false;
     }
 
     onEnter() {
@@ -25,14 +26,20 @@ class PlayState extends State {
         }
 
         p5.keyPressed = () => {
-            if (p5.keyCode === p5.UP_ARROW) {
-                this.snake.addDirectionChange(0, -this.game.config.cellSize);
-            } else if (p5.keyCode === p5.DOWN_ARROW) {
-                this.snake.addDirectionChange(0, this.game.config.cellSize);
-            } else if (p5.keyCode === p5.RIGHT_ARROW) {
-                this.snake.addDirectionChange(this.game.config.cellSize, 0);
-            } else if (p5.keyCode === p5.LEFT_ARROW) {
-                this.snake.addDirectionChange(-this.game.config.cellSize, 0);
+            if (p5.keyCode === p5.SPACEBAR) {
+                this.paused = !this.paused;
+            }
+
+            if (!this.paused) {
+                if (p5.keyCode === p5.UP_ARROW) {
+                    this.snake.addDirectionChange(0, -this.game.config.cellSize);
+                } else if (p5.keyCode === p5.DOWN_ARROW) {
+                    this.snake.addDirectionChange(0, this.game.config.cellSize);
+                } else if (p5.keyCode === p5.RIGHT_ARROW) {
+                    this.snake.addDirectionChange(this.game.config.cellSize, 0);
+                } else if (p5.keyCode === p5.LEFT_ARROW) {
+                    this.snake.addDirectionChange(-this.game.config.cellSize, 0);
+                }
             }
         }
     }
@@ -43,28 +50,30 @@ class PlayState extends State {
     }
 
     update() {
-        // The tick speed ranges (ms between updates) from this.minTickSpeed to this.maxTickSpeed proportionally to snake size
-        this.tickSpeed = this.maxTickSpeed - Math.floor((((this.maxTickSpeed - this.minTickSpeed) * this.snake.total) / this.totalCells));
-        
-        // Tick determines the moviment speed of the game and snake.
-        p5.tick(() => {
-            // Check if the snake has eaten the food
-            if (this.snake.eat(this.food)) {
-                do {
-                    this.food.setRandomLocation();
-                } while (this.snake.collides(this.food.x, this.food.y))
-            }
+        if (!this.paused) {
+            // The tick speed ranges (ms between updates) from this.minTickSpeed to this.maxTickSpeed proportionally to snake size
+            this.tickSpeed = this.maxTickSpeed - Math.floor((((this.maxTickSpeed - this.minTickSpeed) * this.snake.total) / this.totalCells));
 
-            // Then update the snake position and size
-            this.snake.update();
+            // Tick determines the moviment speed of the game and snake.
+            p5.tick(() => {
+                // Check if the snake has eaten the food
+                if (this.snake.eat(this.food)) {
+                    do {
+                        this.food.setRandomLocation();
+                    } while (this.snake.collides(this.food.x, this.food.y))
+                }
 
-            // Check if snake is dead
-            const score = this.snake.total;
-            if (this.snake.dieOnCollision()) {
-                this.game.stateManager.pop();
-                this.game.stateManager.push(new ScoreState(this.game, score));
-            }
-        }, this.tickSpeed)
+                // Then update the snake position and size
+                this.snake.update();
+
+                // Check if snake is dead
+                const score = this.snake.total;
+                if (this.snake.dieOnCollision()) {
+                    this.game.stateManager.pop();
+                    this.game.stateManager.push(new ScoreState(this.game, score));
+                }
+            }, this.tickSpeed)
+        }
     }
 
     render() {
@@ -88,6 +97,15 @@ class PlayState extends State {
         // Render food and snake                
         this.food.render();
         this.snake.render();
+
+        if (this.paused) {
+            p5.fill(255, 255, 255, 50); // Transparent black
+            p5.rect(0, 0, p5.width, p5.height);
+            p5.textSize(60);
+            p5.fill(p5.colorFromSelector('.color-complement-1'));
+            p5.textAlign(p5.CENTER, p5.CENTER);
+            p5.text('Paused', 0, 0, p5.width, p5.height);
+        }
 
         p5.pop();
     }

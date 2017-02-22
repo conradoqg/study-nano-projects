@@ -24,6 +24,7 @@ const p5Extensions = function () {
 
     p5.prototype.tick = tick;
     p5.prototype.colorFromSelector = colorFromSelector;
+    p5.prototype.SPACEBAR = 32;
 }
 
 module.exports = p5Extensions;
