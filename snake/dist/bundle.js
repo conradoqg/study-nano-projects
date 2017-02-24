@@ -18,8 +18,8 @@ class Food {
 
     render() {
         p5.push();                     
-        p5.stroke(p5.colorFromSelector('.color-primary-1'))
-        p5.fill(p5.colorFromSelector('.color-primary-2'));
+        p5.noStroke();
+        p5.fill(p5.colorFromSelector('.color-food'));
         p5.ellipse(this.x + (this.size / 2), this.y + (this.size / 2), this.size / 1.5, this.size / 1.5);
         p5.pop();
     }
@@ -129,16 +129,16 @@ class MenuState extends State {
         p5.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-background'));
 
         // Texts
         p5.textSize(60);
-        p5.fill(p5.colorFromSelector('.color-complement-2'));
+        p5.fill(p5.colorFromSelector('.color-text'));
         p5.textAlign(p5.CENTER,p5.BOTTOM);
         p5.text('Snake Game', 0, 0, p5.width, p5.height / 2);
 
         p5.textSize(20);
-        p5.fill(p5.colorFromSelector('.color-complement-3'));
+        p5.fill(p5.colorFromSelector('.color-sub-text'));
         p5.textAlign(p5.CENTER,p5.TOP);
         p5.textStyle(p5.ITALIC);
         p5.text('Press any key to start...', 0, p5.height / 2, p5.width, p5.height / 2 );        
@@ -262,15 +262,17 @@ class PlayState extends State {
         p5.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-background'));
 
         // Top bar
-        p5.fill(p5.colorFromSelector('.color-secondary-1-2'));
+        p5.noStroke();
+        p5.fill(p5.colorFromSelector('.color-top-bar-background'));
         p5.rect(0, 0, p5.width, this.game.config.cellSize);
 
         // Top bar text    
+        p5.noStroke();
         p5.textSize(14)
-        p5.fill(p5.colorFromSelector('.color-secondary-1-4'));
+        p5.fill(p5.colorFromSelector('.color-top-bar-foreground'));
         p5.textAlign(p5.RIGHT, p5.CENTER);
         p5.text('Score: ' + (this.snake.total - 1), 4, 2, p5.width - 4, this.game.config.cellSize - 2);
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -281,10 +283,10 @@ class PlayState extends State {
         this.snake.render();
 
         if (this.paused) {
-            p5.fill(255, 255, 255, 50); // Transparent black
+            p5.fill(255, 255, 255, 150); // Transparent white
             p5.rect(0, 0, p5.width, p5.height);
             p5.textSize(60);
-            p5.fill(p5.colorFromSelector('.color-complement-1'));
+            p5.fill(p5.colorFromSelector('.color-text'));
             p5.textAlign(p5.CENTER, p5.CENTER);
             p5.text('Paused', 0, 0, p5.width, p5.height);
         }
@@ -330,16 +332,16 @@ class ScoreState extends State {
         p5.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-background'));
 
         // Texts
         p5.textSize(60);
-        p5.fill(p5.colorFromSelector('.color-complement-2'));
+        p5.fill(p5.colorFromSelector('.color-text'));
         p5.textAlign(p5.CENTER, p5.BOTTOM);
         p5.text('Score: ' + (this.score - 1), 0, 0, p5.width, p5.height / 2);
 
         p5.textSize(20);
-        p5.fill(p5.colorFromSelector('.color-complement-3'));
+        p5.fill(p5.colorFromSelector('.color-sub-text'));
         p5.textAlign(p5.CENTER, p5.TOP);
         p5.textStyle(p5.ITALIC);
         p5.text('Press any key to return to menu...', 0, p5.height / 2, p5.width, p5.height / 2);
@@ -474,17 +476,17 @@ class Snake {
   }
 
   render() {
-    const from = p5.color(p5.colorFromSelector('.color-secondary-2-4'));
-    const to = p5.color(p5.colorFromSelector('.color-secondary-2-1'));
+    const from = p5.color(p5.colorFromSelector('.color-snake-head'));
+    const to = p5.color(p5.colorFromSelector('.color-snake-tail'));    
 
     // Draw head
     p5.noStroke();
-    p5.fill(to);
+    p5.fill(from);
     p5.rect(this.head.x, this.head.y, this.size, this.size);
 
     // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
-      p5.fill(p5.lerpColor(from, to, (1 * i) / this.tail.length));
+      p5.fill(p5.lerpColor(to, from, (1 * i) / this.tail.length));
       p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
   }

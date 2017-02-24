@@ -80,15 +80,17 @@ class PlayState extends State {
         p5.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-primary-4'));
+        p5.background(p5.colorFromSelector('.color-background'));
 
         // Top bar
-        p5.fill(p5.colorFromSelector('.color-secondary-1-2'));
+        p5.noStroke();
+        p5.fill(p5.colorFromSelector('.color-top-bar-background'));
         p5.rect(0, 0, p5.width, this.game.config.cellSize);
 
         // Top bar text    
+        p5.noStroke();
         p5.textSize(14)
-        p5.fill(p5.colorFromSelector('.color-secondary-1-4'));
+        p5.fill(p5.colorFromSelector('.color-top-bar-foreground'));
         p5.textAlign(p5.RIGHT, p5.CENTER);
         p5.text('Score: ' + (this.snake.total - 1), 4, 2, p5.width - 4, this.game.config.cellSize - 2);
         p5.textAlign(p5.LEFT, p5.CENTER);
@@ -99,10 +101,10 @@ class PlayState extends State {
         this.snake.render();
 
         if (this.paused) {
-            p5.fill(255, 255, 255, 50); // Transparent black
+            p5.fill(255, 255, 255, 150); // Transparent white
             p5.rect(0, 0, p5.width, p5.height);
             p5.textSize(60);
-            p5.fill(p5.colorFromSelector('.color-complement-1'));
+            p5.fill(p5.colorFromSelector('.color-text'));
             p5.textAlign(p5.CENTER, p5.CENTER);
             p5.text('Paused', 0, 0, p5.width, p5.height);
         }

@@ -17,8 +17,8 @@ class Food {
 
     render() {
         p5.push();                     
-        p5.stroke(p5.colorFromSelector('.color-primary-1'))
-        p5.fill(p5.colorFromSelector('.color-primary-2'));
+        p5.noStroke();
+        p5.fill(p5.colorFromSelector('.color-food'));
         p5.ellipse(this.x + (this.size / 2), this.y + (this.size / 2), this.size / 1.5, this.size / 1.5);
         p5.pop();
     }

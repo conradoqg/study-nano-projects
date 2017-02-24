@@ -121,17 +121,17 @@ class Snake {
   }
 
   render() {
-    const from = p5.color(p5.colorFromSelector('.color-secondary-2-4'));
-    const to = p5.color(p5.colorFromSelector('.color-secondary-2-1'));
+    const from = p5.color(p5.colorFromSelector('.color-snake-head'));
+    const to = p5.color(p5.colorFromSelector('.color-snake-tail'));    
 
     // Draw head
     p5.noStroke();
-    p5.fill(to);
+    p5.fill(from);
     p5.rect(this.head.x, this.head.y, this.size, this.size);
 
     // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
-      p5.fill(p5.lerpColor(from, to, (1 * i) / this.tail.length));
+      p5.fill(p5.lerpColor(to, from, (1 * i) / this.tail.length));
       p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
     }
   }
