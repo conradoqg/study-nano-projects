@@ -1,8 +1,8 @@
 class Snake {
-  constructor(xOffset, yOffset, size) {    
+  constructor(xOffset, yOffset, size) {
     this.xOffset = xOffset;
-    this.yOffset = yOffset;        
-    this.size = size;            
+    this.yOffset = yOffset;
+    this.size = size;
     this.setInitialState();
   }
 
@@ -24,7 +24,7 @@ class Snake {
     } else {
       return false;
     }
-  }  
+  }
 
   collides(x, y, ignoreHead = false) {
     let collides = false;
@@ -76,7 +76,7 @@ class Snake {
     this.tailsToAdd++;
   }
 
-  increaseTailSize() {    
+  increaseTailSize() {
     let newTail = { x: this.head.x, y: this.head.y };
     this.total++;
     this.tail.unshift(newTail);
@@ -122,17 +122,41 @@ class Snake {
 
   render() {
     const from = p5.color(p5.colorFromSelector('.color-snake-head'));
-    const to = p5.color(p5.colorFromSelector('.color-snake-tail'));    
+    const to = p5.color(p5.colorFromSelector('.color-snake-tail'));
 
     // Draw head
     p5.noStroke();
     p5.fill(from);
-    p5.rect(this.head.x, this.head.y, this.size, this.size);
+    if (this.xSpeed > 0) {
+      p5.arc(this.head.x, this.head.y + (this.size / 2), this.size, this.size, p5.PI + p5.HALF_PI, p5.HALF_PI);
+    } else if (this.xSpeed < 0) {
+      p5.arc(this.head.x + this.size, this.head.y + (this.size / 2), this.size, this.size, p5.HALF_PI, p5.PI + p5.HALF_PI);
+    } else if (this.ySpeed > 0) {
+      p5.arc(this.head.x + (this.size / 2), this.head.y, this.size, this.size, p5.TWO_PI, p5.PI);
+    } else if (this.ySpeed < 0) {
+      p5.arc(this.head.x + (this.size / 2), this.head.y + this.size, this.size, this.size, p5.PI, p5.TWO_PI);
+    }
 
     // Draw tail
     for (let i = 0; i < this.tail.length; i++) {
       p5.fill(p5.lerpColor(to, from, (1 * i) / this.tail.length));
-      p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+      if (i == 0) {
+        let tailXSpeed = (this.tail.length >= 2 ? (this.tail[1].x - this.tail[i].x) : this.xSpeed);
+        let tailYSpeed = (this.tail.length >= 2 ? (this.tail[1].y - this.tail[i].y) : this.ySpeed);
+        if (tailXSpeed > 0) {
+          p5.triangle(this.tail[i].x + this.size, this.tail[i].y, this.tail[i].x + this.size, this.tail[i].y + this.size, this.tail[i].x, this.tail[i].y + (this.size / 2));
+        } else if (tailXSpeed < 0) {
+          p5.triangle(this.tail[i].x, this.tail[i].y, this.tail[i].x, this.tail[i].y + this.size, this.tail[i].x + this.size, this.tail[i].y + (this.size / 2));
+        } else if (tailYSpeed > 0) {
+          p5.triangle(this.tail[i].x, this.tail[i].y + this.size, this.tail[i].x + this.size, this.tail[i].y + this.size, this.tail[i].x + (this.size / 2), this.tail[i].y);
+        } else if (tailYSpeed < 0) {
+          p5.triangle(this.tail[i].x, this.tail[i].y, this.tail[i].x + this.size, this.tail[i].y, this.tail[i].x + (this.size / 2), this.tail[i].y + this.size);
+        } else {
+          p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+        }
+      } else {
+        p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+      }
     }
   }
 }
