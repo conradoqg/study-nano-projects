@@ -38,7 +38,7 @@ class Game {
             cellSize: 20,
             FPS: 30,
             canvasElementID: canvasElementID
-        }
+        };
 
         this.stateManager = new StateStack();
     }
@@ -107,11 +107,11 @@ class MenuState extends State {
     onEnter() {
         p5.mousePressed = () => {
             this.play();
-        }
+        };
 
         p5.keyPressed = () => {
-            this.play();            
-        }
+            this.play();
+        };
     }
 
     onExit() {
@@ -119,7 +119,7 @@ class MenuState extends State {
         p5.keyPressed = null;
     }
 
-    update() {}
+    update() { }
 
     play() {
         this.game.stateManager.push(new PlayState(this.game));
@@ -134,14 +134,20 @@ class MenuState extends State {
         // Texts
         p5.textSize(60);
         p5.fill(p5.colorFromSelector('.color-text'));
-        p5.textAlign(p5.CENTER,p5.BOTTOM);
+        p5.textAlign(p5.CENTER, p5.BOTTOM);
         p5.text('Snake Game', 0, 0, p5.width, p5.height / 2);
 
         p5.textSize(20);
         p5.fill(p5.colorFromSelector('.color-sub-text'));
-        p5.textAlign(p5.CENTER,p5.TOP);
+        p5.textAlign(p5.CENTER, p5.TOP);
         p5.textStyle(p5.ITALIC);
-        p5.text('Press any key to start...', 0, p5.height / 2, p5.width, p5.height / 2 );        
+        p5.text('Press any key to start...', 0, p5.height / 2, p5.width, p5.height / 2);
+
+        p5.textSize(14);
+        p5.fill(p5.colorFromSelector('.color-text'));
+        p5.textAlign(p5.CENTER, p5.CENTER);
+        p5.textStyle(p5.BOLD);
+        p5.text('Use <arrows> to move and <space> to pause.', 0, (p5.height / 4), p5.width, p5.height);
 
         p5.pop();
     }
@@ -162,21 +168,21 @@ const p5Extensions = function () {
     let colorCache = [];
     function colorFromSelector(selector) {
         if (colorCache[selector] != null) return colorCache[selector];
-        rules = document.styleSheets[0].cssRules;
-        for (i in rules) {
+        let rules = document.styleSheets[0].cssRules;
+        for (let i in rules) {
             if (rules[i].selectorText == selector) {
                 let color = rules[i].style.color;
                 colorCache[selector] = color;
                 return color; // Get color property specifically
             }
         }
-        return "#FFFFFF";
+        return '#FFFFFF';
     }
 
     p5.prototype.tick = tick;
     p5.prototype.colorFromSelector = colorFromSelector;
     p5.prototype.SPACEBAR = 32;
-}
+};
 
 module.exports = p5Extensions;
 },{}],6:[function(require,module,exports){
@@ -205,7 +211,7 @@ class PlayState extends State {
         this.previousKeyPressed = p5.keyPressed;
         p5.mousePressed = () => {
             this.snake.addTail();
-        }
+        };
 
         p5.keyPressed = () => {
             if (p5.keyCode === p5.SPACEBAR) {
@@ -223,7 +229,7 @@ class PlayState extends State {
                     this.snake.addDirectionChange(-this.game.config.cellSize, 0);
                 }
             }
-        }
+        };
     }
 
     onExit() {
@@ -242,7 +248,7 @@ class PlayState extends State {
                 if (this.snake.eat(this.food)) {
                     do {
                         this.food.setRandomLocation();
-                    } while (this.snake.collides(this.food.x, this.food.y))
+                    } while (this.snake.collides(this.food.x, this.food.y));
                 }
 
                 // Then update the snake position and size
@@ -254,7 +260,7 @@ class PlayState extends State {
                     this.game.stateManager.pop();
                     this.game.stateManager.push(new ScoreState(this.game, score));
                 }
-            }, this.tickSpeed)
+            }, this.tickSpeed);
         }
     }
 
@@ -271,7 +277,7 @@ class PlayState extends State {
 
         // Top bar text    
         p5.noStroke();
-        p5.textSize(14)
+        p5.textSize(14);
         p5.fill(p5.colorFromSelector('.color-top-bar-foreground'));
         p5.textAlign(p5.RIGHT, p5.CENTER);
         p5.text('Score: ' + (this.snake.total - 1), 4, 2, p5.width - 4, this.game.config.cellSize - 2);
@@ -289,6 +295,12 @@ class PlayState extends State {
             p5.fill(p5.colorFromSelector('.color-text'));
             p5.textAlign(p5.CENTER, p5.CENTER);
             p5.text('Paused', 0, 0, p5.width, p5.height);
+
+            p5.textSize(14);
+            p5.fill(p5.colorFromSelector('.color-text'));
+            p5.textAlign(p5.CENTER, p5.CENTER);
+            p5.textStyle(p5.BOLD);
+            p5.text('Use <arrows> to move and <space> to pause.', 0, (p5.height / 4), p5.width, p5.height);
         }
 
         p5.pop();
@@ -312,11 +324,11 @@ class ScoreState extends State {
 
         p5.mousePressed = () => {
             this.return();
-        }
+        };
 
         p5.keyPressed = () => {
             this.return();
-        }
+        };
     }
 
     return() {
@@ -354,142 +366,166 @@ class ScoreState extends State {
 module.exports = ScoreState;
 },{"./state.js":9}],8:[function(require,module,exports){
 class Snake {
-  constructor(xOffset, yOffset, size) {    
-    this.xOffset = xOffset;
-    this.yOffset = yOffset;        
-    this.size = size;            
-    this.setInitialState();
-  }
-
-  setInitialState() {
-    this.total = 1; // 1 counting the head
-    this.tail = [];
-    this.head = { x: this.xOffset, y: this.yOffset };
-    this.xSpeed = this.size;
-    this.ySpeed = 0;
-    this.directionsToChange = [];
-    this.tailsToAdd = 0;
-  }
-
-  eat(food) {
-    let distanceToFood = p5.dist(this.head.x, this.head.y, food.x, food.y);
-    if (distanceToFood < 1) {
-      this.increaseTailSize();
-      return true;
-    } else {
-      return false;
-    }
-  }  
-
-  collides(x, y, ignoreHead = false) {
-    let collides = false;
-
-    // Check head collision 
-    if (!ignoreHead) {
-      const distanceToDeath = p5.dist(x, y, this.head.x, this.head.y);
-      if (distanceToDeath < 1) {
-        collides = true;
-      }
+    constructor(xOffset, yOffset, size) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
+        this.size = size;
+        this.setInitialState();
     }
 
-    if (!collides) {
-      // Check tail collision 
-      for (let i = 0; i < this.tail.length - 1; i++) {
-        let tail = this.tail[i];
-        const distanceToDeath = p5.dist(x, y, tail.x, tail.y);
-        if (distanceToDeath < 1) {
-          collides = true;
-          break;
+    setInitialState() {
+        this.total = 1; // 1 counting the head
+        this.tail = [];
+        this.head = { x: this.xOffset, y: this.yOffset };
+        this.xSpeed = this.size;
+        this.ySpeed = 0;
+        this.directionsToChange = [];
+        this.tailsToAdd = 0;
+    }
+
+    eat(food) {
+        let distanceToFood = p5.dist(this.head.x, this.head.y, food.x, food.y);
+        if (distanceToFood < 1) {
+            this.increaseTailSize();
+            return true;
+        } else {
+            return false;
         }
-      }
     }
 
-    return collides;
-  }
+    collides(x, y, ignoreHead = false) {
+        let collides = false;
 
-  dieOnCollision() {
-    let collides = false;
+        // Check head collision 
+        if (!ignoreHead) {
+            const distanceToDeath = p5.dist(x, y, this.head.x, this.head.y);
+            if (distanceToDeath < 1) {
+                collides = true;
+            }
+        }
 
-    // Check game boundaries collision    
-    if ((this.head.x < this.xOffset || this.head.x >= p5.width + this.xOffset) ||
-      (this.head.y < this.yOffset || this.head.y >= p5.height + this.yOffset)) {
-      collides = true;
+        if (!collides) {
+            // Check tail collision 
+            for (let i = 0; i < this.tail.length - 1; i++) {
+                let tail = this.tail[i];
+                const distanceToDeath = p5.dist(x, y, tail.x, tail.y);
+                if (distanceToDeath < 1) {
+                    collides = true;
+                    break;
+                }
+            }
+        }
+
+        return collides;
     }
 
-    // If the snake head collides with his body (ignoring head) or the game boundaries, reset snake position, size, and direction
-    if (!collides) {
-      collides = this.collides(this.head.x, this.head.y, true);
+    dieOnCollision() {
+        let collides = false;
+
+        // Check game boundaries collision    
+        if ((this.head.x < this.xOffset || this.head.x >= p5.width + this.xOffset) ||
+            (this.head.y < this.yOffset || this.head.y >= p5.height + this.yOffset)) {
+            collides = true;
+        }
+
+        // If the snake head collides with his body (ignoring head) or the game boundaries, reset snake position, size, and direction
+        if (!collides) {
+            collides = this.collides(this.head.x, this.head.y, true);
+        }
+
+        if (collides) this.setInitialState();
+
+        return collides;
     }
 
-    if (collides) this.setInitialState();
-
-    return collides;
-  }
-
-  addTail() {
-    // Adds tail increase to buffer
-    this.tailsToAdd++;
-  }
-
-  increaseTailSize() {    
-    let newTail = { x: this.head.x, y: this.head.y };
-    this.total++;
-    this.tail.unshift(newTail);
-    this.tailsToAdd--;
-  }
-
-  addDirectionChange(x, y) {
-    // Adds direction change to buffer
-    var predicate = (this.directionsToChange.length > 0 ? this.directionsToChange[this.directionsToChange.length - 1] : { x: this.xSpeed, y: this.ySpeed });
-    if (x != predicate.x * -1 || y != predicate.y * -1) {
-      this.directionsToChange.unshift({ x, y });
+    addTail() {
+        // Adds tail increase to buffer
+        this.tailsToAdd++;
     }
-  }
 
-  changeDirection() {
-    let direction = this.directionsToChange.pop();
-    this.xSpeed = direction.x;
-    this.ySpeed = direction.y;
-  }
-
-  update() {
-    // Run buffered actions
-    if (this.tailsToAdd > 0) this.increaseTailSize();
-    if (this.directionsToChange.length > 0) this.changeDirection();
-    this.move();
-  }
-
-  move() {
-    let headBefore = { x: this.head.x, y: this.head.y };
-
-    // Move snake head by the current direction
-    this.head.x = this.head.x + this.xSpeed;
-    this.head.y = this.head.y + this.ySpeed;
-
-    // Move every tail piece to the next tail position and set the last to the previous head position
-    if (this.tail.length > 0) {
-      for (let i = 0; i < this.tail.length - 1; i++) {
-        this.tail[i] = this.tail[i + 1];
-      }
-      this.tail[this.tail.length - 1] = headBefore;
+    increaseTailSize() {
+        let newTail = { x: this.head.x, y: this.head.y };
+        this.total++;
+        this.tail.unshift(newTail);
+        this.tailsToAdd--;
     }
-  }
 
-  render() {
-    const from = p5.color(p5.colorFromSelector('.color-snake-head'));
-    const to = p5.color(p5.colorFromSelector('.color-snake-tail'));    
-
-    // Draw head
-    p5.noStroke();
-    p5.fill(from);
-    p5.rect(this.head.x, this.head.y, this.size, this.size);
-
-    // Draw tail
-    for (let i = 0; i < this.tail.length; i++) {
-      p5.fill(p5.lerpColor(to, from, (1 * i) / this.tail.length));
-      p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+    addDirectionChange(x, y) {
+        // Adds direction change to buffer
+        var predicate = (this.directionsToChange.length > 0 ? this.directionsToChange[this.directionsToChange.length - 1] : { x: this.xSpeed, y: this.ySpeed });
+        if (x != predicate.x * -1 || y != predicate.y * -1) {
+            this.directionsToChange.unshift({ x, y });
+        }
     }
-  }
+
+    changeDirection() {
+        let direction = this.directionsToChange.pop();
+        this.xSpeed = direction.x;
+        this.ySpeed = direction.y;
+    }
+
+    update() {
+        // Run buffered actions
+        if (this.tailsToAdd > 0) this.increaseTailSize();
+        if (this.directionsToChange.length > 0) this.changeDirection();
+        this.move();
+    }
+
+    move() {
+        let headBefore = { x: this.head.x, y: this.head.y };
+
+        // Move snake head by the current direction
+        this.head.x = this.head.x + this.xSpeed;
+        this.head.y = this.head.y + this.ySpeed;
+
+        // Move every tail piece to the next tail position and set the last to the previous head position
+        if (this.tail.length > 0) {
+            for (let i = 0; i < this.tail.length - 1; i++) {
+                this.tail[i] = this.tail[i + 1];
+            }
+            this.tail[this.tail.length - 1] = headBefore;
+        }
+    }
+
+    render() {
+        const from = p5.color(p5.colorFromSelector('.color-snake-head'));
+        const to = p5.color(p5.colorFromSelector('.color-snake-tail'));
+
+        // Draw head
+        p5.noStroke();
+        p5.fill(from);
+        if (this.xSpeed > 0) {
+            p5.arc(this.head.x, this.head.y + (this.size / 2), this.size, this.size, p5.PI + p5.HALF_PI, p5.HALF_PI);
+        } else if (this.xSpeed < 0) {
+            p5.arc(this.head.x + this.size, this.head.y + (this.size / 2), this.size, this.size, p5.HALF_PI, p5.PI + p5.HALF_PI);
+        } else if (this.ySpeed > 0) {
+            p5.arc(this.head.x + (this.size / 2), this.head.y, this.size, this.size, p5.TWO_PI, p5.PI);
+        } else if (this.ySpeed < 0) {
+            p5.arc(this.head.x + (this.size / 2), this.head.y + this.size, this.size, this.size, p5.PI, p5.TWO_PI);
+        }
+
+        // Draw tail
+        for (let i = 0; i < this.tail.length; i++) {
+            p5.fill(p5.lerpColor(to, from, (1 * i) / this.tail.length));
+            if (i == 0) {
+                let tailXSpeed = (this.tail.length >= 2 ? (this.tail[1].x - this.tail[i].x) : this.xSpeed);
+                let tailYSpeed = (this.tail.length >= 2 ? (this.tail[1].y - this.tail[i].y) : this.ySpeed);
+                if (tailXSpeed > 0) {
+                    p5.triangle(this.tail[i].x + this.size, this.tail[i].y, this.tail[i].x + this.size, this.tail[i].y + this.size, this.tail[i].x, this.tail[i].y + (this.size / 2));
+                } else if (tailXSpeed < 0) {
+                    p5.triangle(this.tail[i].x, this.tail[i].y, this.tail[i].x, this.tail[i].y + this.size, this.tail[i].x + this.size, this.tail[i].y + (this.size / 2));
+                } else if (tailYSpeed > 0) {
+                    p5.triangle(this.tail[i].x, this.tail[i].y + this.size, this.tail[i].x + this.size, this.tail[i].y + this.size, this.tail[i].x + (this.size / 2), this.tail[i].y);
+                } else if (tailYSpeed < 0) {
+                    p5.triangle(this.tail[i].x, this.tail[i].y, this.tail[i].x + this.size, this.tail[i].y, this.tail[i].x + (this.size / 2), this.tail[i].y + this.size);
+                } else {
+                    p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+                }
+            } else {
+                p5.rect(this.tail[i].x, this.tail[i].y, this.size, this.size);
+            }
+        }
+    }
 }
 
 module.exports = Snake;
@@ -499,12 +535,12 @@ class State {
         this.name = 'none';
     }
 
-    update() {}
-    render() {}
-    onEnter() {}
-    onExit() {}
-    onPause() {}
-    onResume() {}
+    update() { }
+    render() { }
+    onEnter() { }
+    onExit() { }
+    onPause() { }
+    onResume() { }
 }
 
 module.exports = State;
@@ -516,17 +552,17 @@ class StateStack {
         this.states = [];
         this.states.push(new State('none'));
     }
-        
+
     update() {
         let state = this.states[this.states.length - 1];
-        if (state){
+        if (state) {
             state.update();
         }
     }
 
     render() {
         let state = this.states[this.states.length - 1];
-        if (state){
+        if (state) {
             state.render();
         }
     }
@@ -544,18 +580,18 @@ class StateStack {
 
     pause() {
         let state = this.states[this.states.length - 1];
-        if (state.onPause){
+        if (state.onPause) {
             state.onPause();
         }
     }
 
     resume() {
         let state = this.states[this.states.length - 1];
-        if (state.onResume){
+        if (state.onResume) {
             state.onResume();
         }
-    };
-};
+    }
+}
 
 module.exports = StateStack;
 },{"./state.js":9}]},{},[3]);
