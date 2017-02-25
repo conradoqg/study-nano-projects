@@ -5,17 +5,17 @@ class StateStack {
         this.states = [];
         this.states.push(new State('none'));
     }
-        
+
     update() {
         let state = this.states[this.states.length - 1];
-        if (state){
+        if (state) {
             state.update();
         }
     }
 
     render() {
         let state = this.states[this.states.length - 1];
-        if (state){
+        if (state) {
             state.render();
         }
     }
@@ -33,17 +33,17 @@ class StateStack {
 
     pause() {
         let state = this.states[this.states.length - 1];
-        if (state.onPause){
+        if (state.onPause) {
             state.onPause();
         }
     }
 
     resume() {
         let state = this.states[this.states.length - 1];
-        if (state.onResume){
+        if (state.onResume) {
             state.onResume();
         }
-    };
-};
+    }
+}
 
 module.exports = StateStack;

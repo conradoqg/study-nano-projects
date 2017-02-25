@@ -23,7 +23,7 @@ class PlayState extends State {
         this.previousKeyPressed = p5.keyPressed;
         p5.mousePressed = () => {
             this.snake.addTail();
-        }
+        };
 
         p5.keyPressed = () => {
             if (p5.keyCode === p5.SPACEBAR) {
@@ -41,7 +41,7 @@ class PlayState extends State {
                     this.snake.addDirectionChange(-this.game.config.cellSize, 0);
                 }
             }
-        }
+        };
     }
 
     onExit() {
@@ -60,7 +60,7 @@ class PlayState extends State {
                 if (this.snake.eat(this.food)) {
                     do {
                         this.food.setRandomLocation();
-                    } while (this.snake.collides(this.food.x, this.food.y))
+                    } while (this.snake.collides(this.food.x, this.food.y));
                 }
 
                 // Then update the snake position and size
@@ -72,7 +72,7 @@ class PlayState extends State {
                     this.game.stateManager.pop();
                     this.game.stateManager.push(new ScoreState(this.game, score));
                 }
-            }, this.tickSpeed)
+            }, this.tickSpeed);
         }
     }
 
@@ -89,7 +89,7 @@ class PlayState extends State {
 
         // Top bar text    
         p5.noStroke();
-        p5.textSize(14)
+        p5.textSize(14);
         p5.fill(p5.colorFromSelector('.color-top-bar-foreground'));
         p5.textAlign(p5.RIGHT, p5.CENTER);
         p5.text('Score: ' + (this.snake.total - 1), 4, 2, p5.width - 4, this.game.config.cellSize - 2);

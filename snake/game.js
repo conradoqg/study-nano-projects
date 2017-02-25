@@ -9,7 +9,7 @@ class Game {
             cellSize: 20,
             FPS: 30,
             canvasElementID: canvasElementID
-        }
+        };
 
         this.stateManager = new StateStack();
     }

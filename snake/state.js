@@ -3,12 +3,12 @@ class State {
         this.name = 'none';
     }
 
-    update() {}
-    render() {}
-    onEnter() {}
-    onExit() {}
-    onPause() {}
-    onResume() {}
+    update() { }
+    render() { }
+    onEnter() { }
+    onExit() { }
+    onPause() { }
+    onResume() { }
 }
 
 module.exports = State;

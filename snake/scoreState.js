@@ -13,11 +13,11 @@ class ScoreState extends State {
 
         p5.mousePressed = () => {
             this.return();
-        }
+        };
 
         p5.keyPressed = () => {
             this.return();
-        }
+        };
     }
 
     return() {
