@@ -107,6 +107,12 @@ class PlayState extends State {
             p5.fill(p5.colorFromSelector('.color-text'));
             p5.textAlign(p5.CENTER, p5.CENTER);
             p5.text('Paused', 0, 0, p5.width, p5.height);
+
+            p5.textSize(14);
+            p5.fill(p5.colorFromSelector('.color-text'));
+            p5.textAlign(p5.CENTER, p5.CENTER);
+            p5.textStyle(p5.BOLD);
+            p5.text('Use <arrows> to move and <space> to pause.', 0, (p5.height / 4), p5.width, p5.height);
         }
 
         p5.pop();
