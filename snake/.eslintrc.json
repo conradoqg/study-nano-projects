@@ -13,7 +13,8 @@
         "sourceType": "module"
     },
     "globals": {
-        "p5": true
+        "p5": true,
+        "store": true
     },
     "rules": {
         "no-const-assign": "warn",

@@ -67,7 +67,7 @@ class PlayState extends State {
                 this.snake.update();
 
                 // Check if snake is dead
-                const score = this.snake.total;
+                const score = this.snake.total - 1;
                 if (this.snake.dieOnCollision()) {
                     this.game.stateManager.pop();
                     this.game.stateManager.push(new ScoreState(this.game, score));
