@@ -21,9 +21,14 @@ class PlayState extends State {
     onEnter() {
         this.previousMousePressed = p5.mousePressed;
         this.previousKeyPressed = p5.keyPressed;
-        p5.mousePressed = () => {
-            this.snake.addTail();
-        };
+
+        if (window.getParameterByName('cheat') != null) {
+            p5.mousePressed = () => {
+                this.snake.addTail();
+            };
+        } else {
+            p5.mousePressed = null;
+        }
 
         p5.keyPressed = () => {
             if (p5.keyCode === p5.SPACEBAR) {
