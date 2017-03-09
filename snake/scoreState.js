@@ -8,14 +8,14 @@ class ScoreState extends State {
     }
 
     onEnter() {
-        this.previousMousePressed = p5.mousePressed;
-        this.previousKeyPressed = p5.keyPressed;
+        this.previousMousePressed = p5i.mousePressed;
+        this.previousKeyPressed = p5i.keyPressed;
 
-        p5.mousePressed = () => {
+        p5i.mousePressed = () => {
             this.return();
         };
 
-        p5.keyPressed = () => {
+        p5i.keyPressed = () => {
             this.return();
         };
 
@@ -44,8 +44,8 @@ class ScoreState extends State {
     }
 
     onExit() {
-        p5.mousePressed = this.previousMousePressed;
-        p5.keyPressed = this.previousKeyPressed;
+        p5i.mousePressed = this.previousMousePressed;
+        p5i.keyPressed = this.previousKeyPressed;
     }
 
     update() {
@@ -53,36 +53,36 @@ class ScoreState extends State {
     }
 
     render() {
-        p5.push();
+        p5i.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-background'));
+        p5i.background(p5i.colorFromSelector('.color-background'));
 
         // Texts
-        p5.textSize(60);
-        p5.fill(p5.colorFromSelector('.color-text'));
-        p5.textAlign(p5.CENTER, p5.BOTTOM);
-        p5.text('Score: ' + this.score, 0, 0, p5.width, p5.height / 2);
+        p5i.textSize(60);
+        p5i.fill(p5i.colorFromSelector('.color-text'));
+        p5i.textAlign(p5i.CENTER, p5i.BOTTOM);
+        p5i.text('Score: ' + this.score, 0, 0, p5i.width, p5i.height / 2);
 
-        p5.textSize(20);
-        p5.fill(p5.colorFromSelector('.color-sub-text'));
-        p5.textAlign(p5.CENTER, p5.TOP);
-        p5.textStyle(p5.ITALIC);
-        p5.text('Press any key to return to menu...', 0, p5.height / 2, p5.width, p5.height / 2);
+        p5i.textSize(20);
+        p5i.fill(p5i.colorFromSelector('.color-sub-text'));
+        p5i.textAlign(p5i.CENTER, p5i.TOP);
+        p5i.textStyle(p5i.ITALIC);
+        p5i.text('Press any key to return to menu...', 0, p5i.height / 2, p5i.width, p5i.height / 2);
 
         if (store.enabled) {
-            p5.textSize(14);
-            p5.fill(p5.colorFromSelector('.color-text'));
-            p5.textAlign(p5.CENTER, p5.CENTER);
-            p5.textStyle(p5.BOLD);
+            p5i.textSize(14);
+            p5i.fill(p5i.colorFromSelector('.color-text'));
+            p5i.textAlign(p5i.CENTER, p5i.CENTER);
+            p5i.textStyle(p5i.BOLD);
             let hightscoresText = '';
             this.hightscores.forEach(function (hightscore, index) {
                 if (hightscore != null) hightscoresText += hightscore.name + ': ' + hightscore.score + ((this.hightscores.length - 1) == index ? '' : '\n');
             }, this);
-            p5.text(hightscoresText, 0, (p5.height / 4), p5.width, p5.height);
+            p5i.text(hightscoresText, 0, (p5i.height / 4), p5i.width, p5i.height);
         }
 
-        p5.pop();
+        p5i.pop();
     }
 
 }

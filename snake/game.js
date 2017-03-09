@@ -15,9 +15,9 @@ class Game {
     }
 
     setup() {
-        p5.createCanvas(this.config.width, this.config.height + this.config.cellSize);        
-        p5.frameRate(this.config.FPS);
-        p5.draw = this.draw.bind(this);
+        p5i.createCanvas(this.config.width, this.config.height + this.config.cellSize);        
+        p5i.frameRate(this.config.FPS);
+        p5i.draw = this.draw.bind(this);
         this.stateManager.push(new MenuState(this));
     }
 
@@ -40,7 +40,7 @@ class Game {
         
         new p5((p5instance) => {
             p5instance.setup = self.setup.bind(self);            
-            window.p5 = p5instance;            
+            window.p5i = p5instance;            
         }, this.config.canvasElementID);
     }
 

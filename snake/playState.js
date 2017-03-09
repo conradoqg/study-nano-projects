@@ -14,35 +14,35 @@ class PlayState extends State {
         this.food = new Food(this.xOffset, this.yOffset, this.game.config.cellSize);
         this.tickSpeed = this.minTickSpeed = 50;
         this.maxTickSpeed = 300;
-        this.totalCells = Math.floor(p5.width / this.game.config.cellSize) * Math.floor(p5.height / this.game.config.cellSize);
+        this.totalCells = Math.floor(p5i.width / this.game.config.cellSize) * Math.floor(p5i.height / this.game.config.cellSize);
         this.paused = false;
     }
 
     onEnter() {
-        this.previousMousePressed = p5.mousePressed;
-        this.previousKeyPressed = p5.keyPressed;
+        this.previousMousePressed = p5i.mousePressed;
+        this.previousKeyPressed = p5i.keyPressed;
 
         if (window.getParameterByName('cheat') != null) {
-            p5.mousePressed = () => {
+            p5i.mousePressed = () => {
                 this.snake.addTail();
             };
         } else {
-            p5.mousePressed = null;
+            p5i.mousePressed = null;
         }
 
-        p5.keyPressed = () => {
-            if (p5.keyCode === p5.SPACEBAR) {
+        p5i.keyPressed = () => {
+            if (p5i.keyCode === p5i.SPACEBAR) {
                 this.paused = !this.paused;
             }
 
             if (!this.paused) {
-                if (p5.keyCode === p5.UP_ARROW) {
+                if (p5i.keyCode === p5i.UP_ARROW) {
                     this.snake.addDirectionChange(0, -this.game.config.cellSize);
-                } else if (p5.keyCode === p5.DOWN_ARROW) {
+                } else if (p5i.keyCode === p5i.DOWN_ARROW) {
                     this.snake.addDirectionChange(0, this.game.config.cellSize);
-                } else if (p5.keyCode === p5.RIGHT_ARROW) {
+                } else if (p5i.keyCode === p5i.RIGHT_ARROW) {
                     this.snake.addDirectionChange(this.game.config.cellSize, 0);
-                } else if (p5.keyCode === p5.LEFT_ARROW) {
+                } else if (p5i.keyCode === p5i.LEFT_ARROW) {
                     this.snake.addDirectionChange(-this.game.config.cellSize, 0);
                 }
             }
@@ -50,8 +50,8 @@ class PlayState extends State {
     }
 
     onExit() {
-        p5.mousePressed = this.previousMousePressed;
-        p5.keyPressed = this.previousKeyPressed;
+        p5i.mousePressed = this.previousMousePressed;
+        p5i.keyPressed = this.previousKeyPressed;
     }
 
     update() {
@@ -60,7 +60,7 @@ class PlayState extends State {
             this.tickSpeed = this.maxTickSpeed - Math.floor((((this.maxTickSpeed - this.minTickSpeed) * this.snake.total) / this.totalCells));
 
             // Tick determines the moviment speed of the game and snake.
-            p5.tick(() => {
+            p5i.tick(() => {
                 // Check if the snake has eaten the food
                 if (this.snake.eat(this.food)) {
                     do {
@@ -82,45 +82,45 @@ class PlayState extends State {
     }
 
     render() {
-        p5.push();
+        p5i.push();
 
         // Background
-        p5.background(p5.colorFromSelector('.color-background'));
+        p5i.background(p5i.colorFromSelector('.color-background'));
 
         // Top bar
-        p5.noStroke();
-        p5.fill(p5.colorFromSelector('.color-top-bar-background'));
-        p5.rect(0, 0, p5.width, this.game.config.cellSize);
+        p5i.noStroke();
+        p5i.fill(p5i.colorFromSelector('.color-top-bar-background'));
+        p5i.rect(0, 0, p5i.width, this.game.config.cellSize);
 
         // Top bar text    
-        p5.noStroke();
-        p5.textSize(14);
-        p5.fill(p5.colorFromSelector('.color-top-bar-foreground'));
-        p5.textAlign(p5.RIGHT, p5.CENTER);
-        p5.text('Score: ' + (this.snake.total - 1), 4, 2, p5.width - 4, this.game.config.cellSize - 2);
-        p5.textAlign(p5.LEFT, p5.CENTER);
-        p5.text('Mini snake game', 4, 2, p5.width - 4, this.game.config.cellSize - 2);
+        p5i.noStroke();
+        p5i.textSize(14);
+        p5i.fill(p5i.colorFromSelector('.color-top-bar-foreground'));
+        p5i.textAlign(p5i.RIGHT, p5i.CENTER);
+        p5i.text('Score: ' + (this.snake.total - 1), 4, 2, p5i.width - 4, this.game.config.cellSize - 2);
+        p5i.textAlign(p5i.LEFT, p5i.CENTER);
+        p5i.text('Mini snake game', 4, 2, p5i.width - 4, this.game.config.cellSize - 2);
 
         // Render food and snake                
         this.food.render();
         this.snake.render();
 
         if (this.paused) {
-            p5.fill(255, 255, 255, 150); // Transparent white
-            p5.rect(0, 0, p5.width, p5.height);
-            p5.textSize(60);
-            p5.fill(p5.colorFromSelector('.color-text'));
-            p5.textAlign(p5.CENTER, p5.CENTER);
-            p5.text('Paused', 0, 0, p5.width, p5.height);
+            p5i.fill(255, 255, 255, 150); // Transparent white
+            p5i.rect(0, 0, p5i.width, p5i.height);
+            p5i.textSize(60);
+            p5i.fill(p5i.colorFromSelector('.color-text'));
+            p5i.textAlign(p5i.CENTER, p5i.CENTER);
+            p5i.text('Paused', 0, 0, p5i.width, p5i.height);
 
-            p5.textSize(14);
-            p5.fill(p5.colorFromSelector('.color-text'));
-            p5.textAlign(p5.CENTER, p5.CENTER);
-            p5.textStyle(p5.BOLD);
-            p5.text('Use <arrows> to move and <space> to pause.', 0, (p5.height / 4), p5.width, p5.height);
+            p5i.textSize(14);
+            p5i.fill(p5i.colorFromSelector('.color-text'));
+            p5i.textAlign(p5i.CENTER, p5i.CENTER);
+            p5i.textStyle(p5i.BOLD);
+            p5i.text('Use <arrows> to move and <space> to pause.', 0, (p5i.height / 4), p5i.width, p5i.height);
         }
 
-        p5.pop();
+        p5i.pop();
     }
 }
 
