@@ -12,6 +12,7 @@ class World {
         this.lifeP = null;
         this.count = 0;
         this.lifespan = this.config.height;
+        this.generation = 1;
         this.target = {
             x: this.config.width / 2,
             y: 50,
@@ -50,16 +51,22 @@ class World {
 
         this.count++;
         if (this.count == this.lifespan) {
+            this.generation++;
             this.population.evaluate();
             this.population.selection();
             this.count = 0;
         }
+        this.lifeP.html(
+            'Generation: ' + this.generation +
+            '<br/>Life span: ' + this.count +
+            '<br/> Deaths: ' + this.population.rockets.reduce((crashes, rocket) => { return crashes + (rocket.crashed ? 1 : 0); }, 0) +
+            '<br/> Hits: ' + this.population.rockets.reduce((hits, rocket) => { return hits + (rocket.completed ? 1 : 0); }, 0)
+        );
 
         p5i.fill(255);
         p5i.rect(this.obstacle.x, this.obstacle.y, this.obstacle.width, this.obstacle.height);
 
         p5i.ellipse(this.target.x, this.target.y, this.target.width, this.target.height);
-        console.log(p5i.frameRate());
     }
 
     setupp5i() {
