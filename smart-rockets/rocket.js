@@ -1,14 +1,14 @@
 const DNA = require('./dna.js');
 
 class Rocket {
-    constructor(dna) {
+    constructor(dnaOrGeneAmount) {
         this.pos = p5i.createVector(p5i.width / 2, p5i.height);
         this.size = { width: 25, height: 5};
         this.vel = p5i.createVector();
         this.acc = p5i.createVector();
         this.completed = false;
         this.crashed = false;
-        this.dna = (dna != null ? dna : new DNA(p5i.width));
+        this.dna = (typeof(dnaOrGeneAmount) == 'number' ? new DNA(dnaOrGeneAmount) : dnaOrGeneAmount);
         this.fitness = 0;
     }
 

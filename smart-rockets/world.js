@@ -44,7 +44,7 @@ class World {
         loop();
 
         // Population
-        this.population = new Population(this.config.popsize);
+        this.population = new Population(this.config.lifespan, this.config.popsize);
     }
 
     update() {
@@ -88,7 +88,7 @@ class World {
 
         this.lifeP.html(
             'Generation: ' + this.generation +
-            '<br/>Life span: ' + this.count +
+            '<br/> World time: ' + this.count +
             '<br/> Deaths: ' + this.population.rockets.reduce((crashes, rocket) => { return crashes + (rocket.crashed ? 1 : 0); }, 0) +
             '<br/> Hits: ' + this.population.rockets.reduce((hits, rocket) => { return hits + (rocket.completed ? 1 : 0); }, 0)
         );
