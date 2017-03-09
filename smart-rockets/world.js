@@ -6,17 +6,18 @@ class World {
             width: 600,
             height: 600,
             FPS: 30,
-            canvasElementID: canvasElementID
+            canvasElementID: canvasElementID,
+            popsize: 100,
+            lifespan: 1600
         };
         this.population = null;
         this.lifeP = null;
-        this.count = 0;
-        this.lifespan = this.config.height;
+        this.count = 0;        
         this.generation = 1;
         this.target = {
             x: this.config.width / 2,
             y: 50,
-            diameter: 16            
+            diameter: 16
         };
         this.obstacle = {
             x: 100,
@@ -33,7 +34,6 @@ class World {
 
         // Debug element
         this.lifeP = p5i.createP();
-        this.population = new Population(this.target, this.obstacle);
 
         // p5        
         p5i.draw = this.render.bind(this);
@@ -42,17 +42,44 @@ class World {
             setTimeout(loop);
         };
         loop();
+
+        // Population
+        this.population = new Population(this.config.popsize);
     }
 
     update() {
-        this.population.update(this.count);
+        if (this.population) {
+            let deathCount = 0;
+            // Update organisms
+            for (var i = 0; i < this.population.rockets.length; i++) {
+                let rocket = this.population.rockets[i];
+                rocket.update(this.count);
+                if (rocket.collidesCircle(this.target)) {
+                    rocket.completed = true;
+                }
 
-        this.count++;
-        if (this.count == this.lifespan) {
-            this.generation++;
-            this.population.evaluate();
-            this.population.selection();
-            this.count = 0;
+                // Off-screen
+                if (!rocket.collidesRect({ x: 0, y: 0, width: this.config.width, height: this.config.height })) {
+                    rocket.crashed = true;
+                }
+
+                // Obstacle
+                if (rocket.collidesRect(this.obstacle)) {
+                    rocket.crashed = true;
+                }
+
+                if (rocket.crashed || rocket.completed) {
+                    deathCount++;
+                }
+            }            
+
+            this.count++;
+            if (this.count == this.config.lifespan || deathCount == this.config.popsize) {
+                this.generation++;
+                this.population.evaluate(this.target);
+                this.population.selection();
+                this.count = 0;
+            }
         }
     }
 
@@ -65,8 +92,13 @@ class World {
             '<br/> Deaths: ' + this.population.rockets.reduce((crashes, rocket) => { return crashes + (rocket.crashed ? 1 : 0); }, 0) +
             '<br/> Hits: ' + this.population.rockets.reduce((hits, rocket) => { return hits + (rocket.completed ? 1 : 0); }, 0)
         );
-        
-        this.population.render();
+
+        if (this.population) {
+            for (var i = 0; i < this.population.rockets.length; i++) {
+                let rocket = this.population.rockets[i];
+                rocket.render();
+            }
+        }        
 
         p5i.fill(255);
         p5i.rect(this.obstacle.x, this.obstacle.y, this.obstacle.width, this.obstacle.height);

@@ -1,22 +1,20 @@
 const Rocket = require('./rocket.js');
 
 class Population {
-    constructor(target, obstacle) {
-        this.rockets = [];
-        this.popsize = 100;
+    constructor(popsize) {
+        this.rockets = [];   
+        this.popsize = popsize;     
         this.matingpool = [];
-        this.target = target;
-        this.obstacle = obstacle;
 
         for (var i = 0; i < this.popsize; i++) {
             this.rockets[i] = new Rocket();
         }
     }
 
-    evaluate() {
+    evaluate(target) {
         var maxfit = 0;
         for (var i = 0; i < this.popsize; i++) {
-            this.rockets[i].calcFitness(this.target);
+            this.rockets[i].calcFitness(target);
             if (this.rockets[i].fitness > maxfit) {
                 maxfit = this.rockets[i].fitness;
             }
@@ -44,37 +42,6 @@ class Population {
             newRockets[i] = child;
         }
         this.rockets = newRockets;
-    }
-
-    update(count) {
-        for (var i = 0; i < this.popsize; i++) {
-            let rocket = this.rockets[i];
-
-            // Check collisions            
-
-            // Target
-            if (rocket.collidesCircle(this.target)) {
-                rocket.completed = true;                
-            }
-
-            // Off-screen
-            if (!rocket.collidesRect({ x: 0, y: 0, width: p5i.width, height: p5i.height})) {
-                rocket.crashed = true;
-            }
-
-            // Obstacle
-            if (rocket.collidesRect(this.obstacle)) {
-                rocket.crashed = true;
-            }
-
-            rocket.update(count);
-        }
-    }
-
-    render() {
-        for (var i = 0; i < this.popsize; i++) {
-            this.rockets[i].render();
-        }
     }
 }
 
