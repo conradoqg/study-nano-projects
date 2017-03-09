@@ -27,10 +27,15 @@ class World {
     }
 
     setup() {
+        // Canvas
         p5i.createCanvas(this.config.width, this.config.height);
         p5i.frameRate(this.config.FPS);
+
+        // Debug element
         this.lifeP = p5i.createP();
         this.population = new Population(this.target, this.obstacle);
+
+        // p5        
         p5i.draw = this.render.bind(this);
         let loop = () => {
             this.update();
@@ -66,20 +71,6 @@ class World {
         p5i.fill(255);
         p5i.rect(this.obstacle.x, this.obstacle.y, this.obstacle.width, this.obstacle.height);
         p5i.ellipse(this.target.x, this.target.y, this.target.diameter);
-    }
-
-    setupp5i() {
-        let self = this;
-        p5.disableFriendlyErrors = true;
-
-        new p5((p5iinstance) => {
-            p5iinstance.setup = self.setup.bind(self);
-            window.p5i = p5iinstance;
-        }, this.config.canvasElementID);
-    }
-
-    init() {
-        this.setupp5i();
     }
 }
 
