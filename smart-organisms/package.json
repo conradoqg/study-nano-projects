@@ -1,7 +1,7 @@
 {
-  "name": "smart-rockets",
+  "name": "smart-organisms",
   "version": "0.0.1",
-  "description": "Simple genetic algorithm implementation for rockets",
+  "description": "Simple genetic algorithm implementation for organisms",
   "main": "index.js",
   "dependencies": {
     "budo": "^9.4.7",

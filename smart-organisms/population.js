@@ -1,4 +1,4 @@
-const Rocket = require('./rocket.js');
+const Organism = require('./organism.js');
 
 class Population {
     constructor(geneAmount, popsize) {
@@ -7,7 +7,7 @@ class Population {
         this.matingpool = [];
 
         for (var i = 0; i < this.popsize; i++) {
-            this.rockets[i] = new Rocket(geneAmount);
+            this.rockets[i] = new Organism(geneAmount);
         }
     }
 

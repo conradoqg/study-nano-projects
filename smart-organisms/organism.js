@@ -1,6 +1,6 @@
 const DNA = require('./dna.js');
 
-class Rocket {
+class Organism {
     constructor(dnaOrGeneAmount) {
         this.pos = p5i.createVector(p5i.width / 2, p5i.height);
         this.size = { width: 25, height: 5};
@@ -26,7 +26,7 @@ class Rocket {
 
     mate(partner) {
         const childDNA = this.dna.crossover(partner.dna);
-        return new Rocket(childDNA);
+        return new Organism(childDNA);
     }
 
     update(count) {
@@ -63,4 +63,4 @@ class Rocket {
     }
 }
 
-module.exports = Rocket;
+module.exports = Organism;
