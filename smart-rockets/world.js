@@ -5,7 +5,7 @@ class World {
         this.config = {
             width: 600,
             height: 600,
-            FPS: 60,
+            FPS: 30,
             canvasElementID: canvasElementID
         };
         this.population = null;
@@ -16,13 +16,12 @@ class World {
         this.target = {
             x: this.config.width / 2,
             y: 50,
-            width: 16,
-            height: 16
+            diameter: 16            
         };
         this.obstacle = {
             x: 100,
-            y: 150,
-            width: 200,
+            y: 350,
+            width: 400,
             height: 10
         };
     }
@@ -32,22 +31,16 @@ class World {
         p5i.frameRate(this.config.FPS);
         this.lifeP = p5i.createP();
         this.population = new Population(this.target, this.obstacle);
-        p5i.draw = this.draw.bind(this);
-    }
-
-    draw() {
-        this.update();
-        this.render();
+        p5i.draw = this.render.bind(this);
+        let loop = () => {
+            this.update();
+            setTimeout(loop);
+        };
+        loop();
     }
 
     update() {
-
-    }
-
-    render() {
-        p5i.background(0);
-        this.population.run(this.count);
-        this.lifeP.html(this.count);
+        this.population.update(this.count);
 
         this.count++;
         if (this.count == this.lifespan) {
@@ -56,17 +49,23 @@ class World {
             this.population.selection();
             this.count = 0;
         }
+    }
+
+    render() {
+        p5i.background(0);
+
         this.lifeP.html(
             'Generation: ' + this.generation +
             '<br/>Life span: ' + this.count +
             '<br/> Deaths: ' + this.population.rockets.reduce((crashes, rocket) => { return crashes + (rocket.crashed ? 1 : 0); }, 0) +
             '<br/> Hits: ' + this.population.rockets.reduce((hits, rocket) => { return hits + (rocket.completed ? 1 : 0); }, 0)
         );
+        
+        this.population.render();
 
         p5i.fill(255);
         p5i.rect(this.obstacle.x, this.obstacle.y, this.obstacle.width, this.obstacle.height);
-
-        p5i.ellipse(this.target.x, this.target.y, this.target.width, this.target.height);
+        p5i.ellipse(this.target.x, this.target.y, this.target.diameter);
     }
 
     setupp5i() {

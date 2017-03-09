@@ -1,12 +1,14 @@
-function DNA(cromosomesAmount) {
-    this.genes = [];
-    this.maxforce = 0.2;
-    for (var i = 0; i < cromosomesAmount; i++) {
-        this.genes[i] = p5.Vector.random2D();
-        this.genes[i].setMag(this.maxforce);
+class DNA {
+    constructor(genesAmount) {
+        this.genes = [];
+        this.genesAmount = genesAmount;
+        this.maxforce = 0.2;
+        for (var i = 0; i < genesAmount; i++) {
+            this.genes[i] = this.createNewGene();
+        }
     }
 
-    this.crossover = function (partner) {
+    crossover(partner) {
         var newgenes = [];
         var mid = p5i.floor(p5i.random(this.genes.length));
         for (var i = 0; i < this.genes.length; i++) {
@@ -15,21 +17,22 @@ function DNA(cromosomesAmount) {
             } else {
                 newgenes[i] = partner.genes[i];
             }
-        }
-        const newDNA = new DNA(cromosomesAmount);
-        newDNA.genes = newgenes;
-        return newDNA;
-    };
 
-    this.mutation = function () {
-        for (var i = 0; i < this.genes.length; i++) {
+            // 0.01 mutation chance
             if (p5i.random(1) < 0.01) {
-                this.genes[i] = p5.Vector.random2D();
-                this.genes[i].setMag(this.maxforce);
+                newgenes[i] = this.createNewGene();
             }
         }
-    };
+        const newDNA = new DNA(this.genesAmount);
+        newDNA.genes = newgenes;
+        return newDNA;
+    }
 
+    createNewGene() {
+        let newGene = p5.Vector.random2D();
+        newGene.setMag(this.maxforce);
+        return newGene;
+    }
 }
 
 module.exports = DNA;
