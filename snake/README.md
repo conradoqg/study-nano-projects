@@ -1,5 +1,5 @@
-# Mini snake game
-> A mini project aimed to learn more about the [p5.js](http://p5js.org) library and game development.
+# Nano snake game
+> A nano project aimed to learn more about the [p5.js](http://p5js.org) library and game development.
 
 Based on the work of Daniel Shiffman: http://codingtra.in
 
