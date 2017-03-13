@@ -6,10 +6,10 @@ Each folder has its own project and READMEs.
 ## Snake
 A nano project aimed to learn more about the [p5.js](http://p5js.org) library and game development.
 
-[Check it out!](https://rawgit.com/conradoqg/study-nano-projects/master/smart-organisms/index.html)
+[Check it out!](https://rawgit.com/conradoqg/study-nano-projects/master/snake/index.html)
 
 ## Smart organisms
 A nano project aimed to learn more about the [p5.js](http://p5js.org) library and genetic algorithm.
 
-[Check it out!](https://rawgit.com/conradoqg/study-nano-projects/master/snake/index.html).
+[Check it out!](https://rawgit.com/conradoqg/study-nano-projects/master/smart-organisms/index.html).
 
