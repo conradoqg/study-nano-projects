@@ -22,7 +22,7 @@ class PlayState extends State {
         this.previousMousePressed = p5i.mousePressed;
         this.previousKeyPressed = p5i.keyPressed;
 
-        if (window.getParameterByName('cheat') != null) {
+        if (uQuery('cheat') != null) {
             p5i.mousePressed = () => {
                 this.snake.addTail();
             };

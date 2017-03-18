@@ -15,7 +15,8 @@
     "globals": {
         "p5": true,
         "p5i": true,
-        "store": true
+        "store": true,
+        "uQuery": true
     },
     "rules": {
         "no-const-assign": "warn",
