@@ -11,5 +11,7 @@ A nano project aimed to learn more about the [p5.js](http://p5js.org) library an
 ## Smart organisms
 A nano project aimed to learn more about the [p5.js](http://p5js.org) library and genetic algorithm.
 
+[More details](https://github.com/conradoqg/study-nano-projects/tree/master/smart-organisms)
+
 [Check it out!](https://rawgit.com/conradoqg/study-nano-projects/master/smart-organisms/index.html).
 
