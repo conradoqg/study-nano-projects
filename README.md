@@ -13,13 +13,6 @@ A nano project aimed to learn more about the [p5.js](http://p5js.org) library an
 
 [Check it out!](https://rawgit.com/conradoqg/snake/master/index.html)
 
-## Snake
-A nano project aimed to learn more about the [p5.js](http://p5js.org) library and game development.
-
-[More details](https://github.com/conradoqg/snake/tree/master)
-
-[Check it out!](https://rawgit.com/conradoqg/snake/master/index.html)
-
 ## Smart organisms
 A nano project aimed to learn more about the [p5.js](http://p5js.org) library and genetic algorithm.
 
